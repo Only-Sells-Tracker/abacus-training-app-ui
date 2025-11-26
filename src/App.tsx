@@ -6,6 +6,7 @@ import { ProgressPage } from './components/ProgressPage';
 import { LeaderboardPage } from './components/LeaderboardPage';
 import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
+import Login from './components/Login';
 
 export interface Tournament {
   id: string;
@@ -113,6 +114,7 @@ const tournaments: Tournament[] = [
 export default function App() {
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
   const [activeSection, setActiveSection] = useState<NavSection>('dashboard');
+  const [user, setUser] = useState<string | null>(null);
 
   const handleTournamentSelect = (tournament: Tournament) => {
     setSelectedTournament(tournament);
@@ -174,6 +176,10 @@ export default function App() {
         );
     }
   };
+
+  if (!user) {
+    return <Login onLogin={setUser} />;
+  }
 
   return (
     <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{paddingTop: '40px'}}>
