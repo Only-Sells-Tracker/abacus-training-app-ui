@@ -18,17 +18,9 @@ const navItems = [
 
 export function Navigation({ activeSection, onSectionChange }: NavigationProps) {
   return (
-    <nav className="bg-white/5 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+    <nav className="sticky-footer bg-white/5 backdrop-blur-xl border-t border-white/10 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-              <span className="text-xl">🧮</span>
-            </div>
-            <span className="text-xl text-white hidden sm:block">Abacus Training</span>
-          </div>
-
+        <div className="flex items-center justify-center h-16">
           {/* Navigation Items - Desktop */}
           <div className="hidden md:flex items-center gap-2">
             {navItems.map((item) => {
@@ -59,7 +51,7 @@ export function Navigation({ activeSection, onSectionChange }: NavigationProps) 
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-2 w-full justify-around">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
@@ -67,7 +59,7 @@ export function Navigation({ activeSection, onSectionChange }: NavigationProps) 
                 <button
                   key={item.id}
                   onClick={() => onSectionChange(item.id)}
-                  className="relative p-2 rounded-xl transition-all"
+                  className="relative p-2 rounded-xl transition-all flex-1 flex justify-center"
                 >
                   {isActive && (
                     <motion.div

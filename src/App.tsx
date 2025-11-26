@@ -176,11 +176,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
+    <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{paddingTop: '40px'}}>
+      <div className="flex-1 overflow-auto">
+        {renderContent()}
+      </div>
       {!selectedTournament && (
         <Navigation activeSection={activeSection} onSectionChange={setActiveSection} />
       )}
-      {renderContent()}
     </div>
   );
 }

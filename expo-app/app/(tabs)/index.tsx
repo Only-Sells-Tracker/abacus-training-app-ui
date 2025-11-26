@@ -110,10 +110,6 @@ export default function HomeScreen() {
         originWhitelist={["*"]}
         source={{ uri: "https://rosalie-overbooming-coevally.ngrok-free.dev" }}
         allowFileAccess
-        style={{
-          flex: 1,
-          marginTop: insets.top,
-        }}
       />
     </View>
   );
