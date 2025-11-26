@@ -99,15 +99,21 @@
 
 import { View } from "react-native";
 import { WebView } from "react-native-webview";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={{ flex: 1 }}>
       <WebView
         originWhitelist={["*"]}
         source={{ uri: "https://rosalie-overbooming-coevally.ngrok-free.dev" }}
         allowFileAccess
-        style={{ flex: 1 }}
+        style={{
+          flex: 1,
+          marginTop: insets.top,
+        }}
       />
     </View>
   );
