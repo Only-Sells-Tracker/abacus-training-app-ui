@@ -1,7 +1,13 @@
 import { useState } from 'react';
+// @ts-ignore: Allow importing image asset without type declaration
 import logo from '../asset/logo.png';
 
-export default function Login({ onLogin }: { onLogin: (email: string) => void }) {
+export interface LoginResponse {
+  token: string;
+  email: string;
+}
+
+export default function Login({ onLogin }: { onLogin: (user: LoginResponse) => void }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -11,15 +17,24 @@ export default function Login({ onLogin }: { onLogin: (email: string) => void })
         e.preventDefault();
         setError('');
         setLoading(true);
-        // Simulate login
-        setTimeout(() => {
-            setLoading(false);
-            if (email && password) {
-                onLogin(email);
+        try {
+            const res = await fetch('https://abacus-demo.free.beeceptor.com/auth/signin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            if (!res.ok) throw new Error('Invalid credentials');
+            const data = await res.json();
+            if (data.token) {
+                onLogin(data);
             } else {
-                setError('Please enter both email and password.');
+                setError('Invalid credentials');
             }
-        }, 800);
+        } catch (err) {
+            setError('Invalid credentials');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Settings, Volume2, Bell, Moon, Globe, Info, LogOut } from 'lucide-react';
 
-export function SettingsPage() {
+export function SettingsPage({ onSignOut }: { onSignOut?: () => void }) {
   const settingsSections = [
     {
       title: 'Preferences',
@@ -90,7 +90,10 @@ export function SettingsPage() {
                 <span className="text-base text-white">Clear Data</span>
               </div>
             </button>
-            <button className="w-full flex items-center justify-between p-4 hover:bg-red-500/10 transition-all group">
+            <button
+              className="w-full flex items-center justify-between p-4 hover:bg-red-500/10 transition-all group"
+              onClick={onSignOut}
+            >
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center group-hover:bg-red-500/30">
                   <LogOut className="w-5 h-5 text-red-400" />

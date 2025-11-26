@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { AppRoutes } from './routes';
 import { Dashboard } from './components/Dashboard';
 import { TrainingGame } from './components/TrainingGame';
 import { Navigation, NavSection } from './components/Navigation';
@@ -7,6 +9,7 @@ import { LeaderboardPage } from './components/LeaderboardPage';
 import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
 import Login from './components/Login';
+import { LoginResponse } from './components/Login';
 
 export interface Tournament {
   id: string;
@@ -113,15 +116,18 @@ const tournaments: Tournament[] = [
 
 export default function App() {
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
-  const [activeSection, setActiveSection] = useState<NavSection>('dashboard');
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<LoginResponse | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleTournamentSelect = (tournament: Tournament) => {
     setSelectedTournament(tournament);
+    navigate('/game');
   };
 
   const handleBackToDashboard = () => {
     setSelectedTournament(null);
+    navigate('/');
   };
 
   const handleCustomPractice = (settings: {
@@ -142,53 +148,57 @@ export default function App() {
       icon: '⚙️'
     };
     setSelectedTournament(customTournament);
+    navigate('/game');
   };
 
-  const renderContent = () => {
-    if (selectedTournament) {
-      return <TrainingGame tournament={selectedTournament} onBack={handleBackToDashboard} />;
-    }
-
-    switch (activeSection) {
-      case 'dashboard':
-        return (
-          <Dashboard 
-            tournaments={tournaments} 
-            onSelectTournament={handleTournamentSelect}
-            onCustomPractice={handleCustomPractice}
-          />
-        );
-      case 'progress':
-        return <ProgressPage />;
-      case 'leaderboard':
-        return <LeaderboardPage />;
-      case 'profile':
-        return <ProfilePage />;
-      case 'settings':
-        return <SettingsPage />;
-      default:
-        return (
-          <Dashboard 
-            tournaments={tournaments} 
-            onSelectTournament={handleTournamentSelect}
-            onCustomPractice={handleCustomPractice}
-          />
-        );
-    }
+  const handleSignOut = () => {
+    setUser(null);
+    navigate('/login');
   };
 
-  if (!user) {
-    return <Login onLogin={setUser} />;
-  }
+  // Map path to NavSection
+  const pathToSection = (pathname: string): NavSection => {
+    switch (pathname) {
+      case '/progress': return 'progress';
+      case '/leaderboard': return 'leaderboard';
+      case '/profile': return 'profile';
+      case '/settings': return 'settings';
+      default: return 'dashboard';
+    }
+  };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{paddingTop: '40px'}}>
-      <div className="flex-1 overflow-auto">
-        {renderContent()}
-      </div>
-      {!selectedTournament && (
-        <Navigation activeSection={activeSection} onSectionChange={setActiveSection} />
-      )}
-    </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          user && user.token ? <Navigate to="/" replace /> : <Login onLogin={setUser} />
+        }
+      />
+      <Route
+        path="/*"
+        element={
+          user && user.token ? (
+            <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{paddingTop: '40px'}}>
+              <div className="flex-1 overflow-auto">
+                <AppRoutes
+                  tournaments={tournaments}
+                  onSelectTournament={handleTournamentSelect}
+                  onCustomPractice={handleCustomPractice}
+                  selectedTournament={selectedTournament}
+                  handleBackToDashboard={handleBackToDashboard}
+                  handleSignOut={handleSignOut}
+                />
+              </div>
+              {location.pathname !== '/game' && (
+                <Navigation activeSection={pathToSection(location.pathname)} onSectionChange={section => navigate(section === 'dashboard' ? '/' : `/${section}`)} />
+              )}
+            </div>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+    </Routes>
   );
 }
