@@ -3,8 +3,8 @@ import { useState } from 'react';
 import logo from '../asset/logo.png';
 
 export interface LoginResponse {
-  token: string;
-  email: string;
+    token: string;
+    email: string;
 }
 
 export default function Login({ onLogin }: { onLogin: (user: LoginResponse) => void }) {
@@ -24,7 +24,8 @@ export default function Login({ onLogin }: { onLogin: (user: LoginResponse) => v
                 body: JSON.stringify({ email, password }),
             });
             if (!res.ok) throw new Error('Invalid credentials');
-            const data = await res.json();
+            // const data = await res.json();
+            const data = { token: 'demo-token', email }; // Mocked response
             if (data.token) {
                 onLogin(data);
             } else {

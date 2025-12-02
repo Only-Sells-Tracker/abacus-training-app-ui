@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AppRoutes } from './routes';
 import { Dashboard } from './components/Dashboard';
@@ -10,6 +10,7 @@ import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
 import Login from './components/Login';
 import { LoginResponse } from './components/Login';
+import { IAuthenticatedUser, IUseUserStore, useUserStore } from './store/useUserStore';
 
 export interface Tournament {
   id: string;
@@ -119,6 +120,7 @@ export default function App() {
   const [user, setUser] = useState<LoginResponse | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { authenticatedUser, setAuthenticatedUser, removeAuthenticatedUser } = useUserStore();
 
   const handleTournamentSelect = (tournament: Tournament) => {
     setSelectedTournament(tournament);
@@ -152,8 +154,9 @@ export default function App() {
   };
 
   const handleSignOut = () => {
-    setUser(null);
-    navigate('/login');
+    console.log('1 authenticatedUser being removed from store and localStorage');
+    removeAuthenticatedUser();
+    // navigate('/login');
   };
 
   // Map path to NavSection
@@ -167,19 +170,45 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('authenticatedUser')) {
+      console.log('authenticatedUser now [] if authed BEFORE', authenticatedUser);
+      const authResponse = JSON.parse(localStorage.getItem('authenticatedUser') as string);
+      setAuthenticatedUser({ token: authResponse.token, email: authResponse.email });
+      console.log('authenticatedUser now [] if authed AFTER', authenticatedUser);
+    } else {
+      console.log('authenticatedUser now [] if NOT authed', authenticatedUser);
+    }
+    // if (authenticatedUser && authenticatedUser.token) {
+    //   console.log('user now [] if authed', user);
+    //   console.log('authenticatedUser now [] if authed', authenticatedUser);
+    // } else {
+    //   console.log('user now [] if NOT authed', user);
+    //   console.log('authenticatedUser now [] if NOT authed', authenticatedUser);
+    // }
+  }, []);
+
+  useEffect(() => {
+    if (authenticatedUser && authenticatedUser.token) {
+      console.log('authenticatedUser now [authenticatedUser] if authed', authenticatedUser);
+    } else {
+      console.log('authenticatedUser now [authenticatedUser] if NOT authed', authenticatedUser);
+    }
+  }, [authenticatedUser]);
+
   return (
     <Routes>
       <Route
         path="/login"
         element={
-          user && user.token ? <Navigate to="/" replace /> : <Login onLogin={setUser} />
+          authenticatedUser && authenticatedUser.token ? <Navigate to="/" replace /> : <Login onLogin={setAuthenticatedUser} />
         }
       />
       <Route
         path="/*"
         element={
-          user && user.token ? (
-            <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{paddingTop: '40px'}}>
+          authenticatedUser && authenticatedUser.token ? (
+            <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{ paddingTop: '40px' }}>
               <div className="flex-1 overflow-auto">
                 <AppRoutes
                   tournaments={tournaments}
