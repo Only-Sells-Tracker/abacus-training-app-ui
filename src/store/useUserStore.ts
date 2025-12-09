@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import CONSTANTS from '../utils/constants';
 
 export interface IAuthenticatedUser {
   token: string | null;
@@ -17,12 +18,12 @@ export const useUserStore = create<IUseUserStore>((set) => ({
     email: null,
   },
   setAuthenticatedUser: (authenticatedUser: IAuthenticatedUser) => {
-    localStorage.setItem('authenticatedUser', JSON.stringify(authenticatedUser))
+    localStorage.setItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY, JSON.stringify(authenticatedUser))
     return set({ authenticatedUser: authenticatedUser })
   },
   removeAuthenticatedUser: () => {
     console.log('authenticatedUser being removed from store and localStorage');
-    localStorage.removeItem('authenticatedUser')
+    localStorage.removeItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY);
     return set({
       authenticatedUser: {
         token: null,

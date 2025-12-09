@@ -1,7 +1,8 @@
 import { motion } from 'motion/react';
 import { Settings, Volume2, Bell, Moon, Globe, Info, LogOut } from 'lucide-react';
+import { useUserStore } from '../store/useUserStore';
 
-export function SettingsPage({ onSignOut }: { onSignOut?: () => void }) {
+export function SettingsPage() {
   const settingsSections = [
     {
       title: 'Preferences',
@@ -19,6 +20,11 @@ export function SettingsPage({ onSignOut }: { onSignOut?: () => void }) {
       ],
     },
   ];
+
+  const { removeAuthenticatedUser } = useUserStore();
+  const handleSignOut = () => {
+    removeAuthenticatedUser();
+  };
 
   return (
     <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
@@ -48,9 +54,8 @@ export function SettingsPage({ onSignOut }: { onSignOut?: () => void }) {
                 return (
                   <button
                     key={item.label}
-                    className={`w-full flex items-center justify-between p-4 hover:bg-white/5 transition-all ${
-                      index !== section.items.length - 1 ? 'border-b border-white/10' : ''
-                    }`}
+                    className={`w-full flex items-center justify-between p-4 hover:bg-white/5 transition-all ${index !== section.items.length - 1 ? 'border-b border-white/10' : ''
+                      }`}
                   >
                     <div className="flex items-center gap-4">
                       <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center`}>
@@ -92,7 +97,7 @@ export function SettingsPage({ onSignOut }: { onSignOut?: () => void }) {
             </button>
             <button
               className="w-full flex items-center justify-between p-4 hover:bg-red-500/10 transition-all group"
-              onClick={onSignOut}
+              onClick={handleSignOut}
             >
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center group-hover:bg-red-500/30">

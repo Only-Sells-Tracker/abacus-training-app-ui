@@ -1,12 +1,17 @@
+"use client";
 import { motion } from 'motion/react';
 import { TrendingUp, Calendar, Target, Zap, Award } from 'lucide-react';
+import { useReportStore } from '../store/useReportStore';
+import { useEffect } from 'react';
 
 export function ProgressPage() {
+  const { report, error, loading, fetchReport } = useReportStore();
+
   const stats = [
-    { label: 'Total Sessions', value: '24', icon: Calendar, color: 'from-blue-500 to-cyan-600' },
-    { label: 'Accuracy Rate', value: '87%', icon: Target, color: 'from-green-500 to-emerald-600' },
-    { label: 'Current Streak', value: '5 days', icon: Zap, color: 'from-yellow-500 to-orange-600' },
-    { label: 'Achievements', value: '12', icon: Award, color: 'from-purple-500 to-pink-600' },
+    { label: 'Total Sessions', value: '24', icon: Calendar, color: 'from-blue-500 to-cyan-600', valueText: 'sessions' },
+    { label: 'Accuracy Rate', value: '87%', icon: Target, color: 'from-green-500 to-emerald-600', valueText: 'accuracy' },
+    { label: 'Current Streak', value: '5 days', icon: Zap, color: 'from-yellow-500 to-orange-600', valueText: 'streak' },
+    { label: 'Achievements', value: '12', icon: Award, color: 'from-purple-500 to-pink-600', valueText: 'achievements' },
   ];
 
   const recentActivity = [
@@ -16,6 +21,10 @@ export function ProgressPage() {
     { planet: 'Jupiter', date: 'Yesterday', score: '88%', correct: 7, total: 8 },
     { planet: 'Mars', date: '2 days ago', score: '86%', correct: 6, total: 7 },
   ];
+
+  useEffect(() => {
+    fetchReport();
+  }, []);
 
   return (
     <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
@@ -28,24 +37,61 @@ export function ProgressPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
-              >
-                <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center mb-4`}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-3xl text-white mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
-              </motion.div>
-            );
-          })}
+          <motion.div
+            key="Total Sessions"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0 * 0.1 }}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+          >
+            <div className={`w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-4`}>
+              <Calendar className="w-6 h-6 text-white" />
+            </div>
+            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : report?.sessions}</div>
+            <div className="text-sm text-gray-400">Total Sessions</div>
+          </motion.div>
+
+          <motion.div
+            key="Accuracy Rate"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0 * 0.1 }}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+          >
+            <div className={`w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4`}>
+              <Target className="w-6 h-6 text-white" />
+            </div>
+            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : `${report?.accuracy}%`}</div>
+            <div className="text-sm text-gray-400">Accuracy Rate</div>
+          </motion.div>
+
+          <motion.div
+            key="Current Streak"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0 * 0.1 }}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+          >
+            <div className={`w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4`}>
+              <Zap className="w-6 h-6 text-white" />
+            </div>
+            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : report?.streak}</div>
+            <div className="text-sm text-gray-400">Current Streak</div>
+          </motion.div>
+
+          <motion.div
+            key="Achievements"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0 * 0.1 }}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
+          >
+            <div className={`w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-4`}>
+              <Award className="w-6 h-6 text-white" />
+            </div>
+            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : report?.achievements}</div>
+            <div className="text-sm text-gray-400">Achievements</div>
+          </motion.div>
         </div>
 
         {/* Chart Placeholder */}
@@ -61,6 +107,7 @@ export function ProgressPage() {
             <div className="text-center">
               <div className="text-6xl mb-4">📊</div>
               <p className="text-gray-400">Performance chart coming soon</p>
+              {/* <TinyBarChart /> */}
             </div>
           </div>
         </div>

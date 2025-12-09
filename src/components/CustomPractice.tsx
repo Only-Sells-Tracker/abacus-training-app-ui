@@ -12,7 +12,7 @@ interface CustomPracticeProps {
 }
 
 export function CustomPractice({ onStart }: CustomPracticeProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [digitCount, setDigitCount] = useState(3);
   const [operations, setOperations] = useState<('add' | 'subtract')[]>(['add', 'subtract']);
   const [numberCount, setNumberCount] = useState(5);

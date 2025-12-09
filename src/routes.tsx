@@ -1,20 +1,31 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Dashboard } from './components/Dashboard';
 import { ProgressPage } from './components/ProgressPage';
 import { LeaderboardPage } from './components/LeaderboardPage';
 import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
 import { TrainingGame } from './components/TrainingGame';
+import { useEffect } from 'react';
+import { MCQPractice } from './components/MCQPractice';
 
-export function AppRoutes({ tournaments, onSelectTournament, onCustomPractice, selectedTournament, handleBackToDashboard, handleSignOut }: any) {
+export function AppRoutes() {
+  const location = useLocation();
+  useEffect(() => {
+    console.log('Location changed');
+    window.scroll({
+      top: 0,
+      left: 0,
+    });
+  }, [location]);
   return (
     <Routes>
-      <Route path="/" element={<Dashboard tournaments={tournaments} onSelectTournament={onSelectTournament} onCustomPractice={onCustomPractice} />} />
+      <Route path="/" element={<Dashboard />} />
       <Route path="/progress" element={<ProgressPage />} />
       <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/settings" element={<SettingsPage onSignOut={handleSignOut} />} />
-      <Route path="/game" element={<TrainingGame tournament={selectedTournament} onBack={handleBackToDashboard} />} />
+      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/game" element={<TrainingGame />} />
+      <Route path="/mcq" element={<MCQPractice />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
