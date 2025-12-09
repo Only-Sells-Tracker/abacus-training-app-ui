@@ -1,12 +1,12 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 import axios from 'axios';
 import ApiURL from '../utils/apiurl';
 
 export interface IReport {
-  sessions: number,
-  accuracy: number,
-  streak: number,
-  achievements: number,
+  sessions: number;
+  accuracy: number;
+  streak: number;
+  achievements: number;
 }
 
 export interface IUseReportStore {
@@ -16,7 +16,7 @@ export interface IUseReportStore {
   fetchReport: () => void;
 }
 
-export const useReportStore = create<IUseReportStore>((set) => ({
+export const useReportStore = create<IUseReportStore>(set => ({
   report: null,
   error: null,
   loading: false,
@@ -30,4 +30,4 @@ export const useReportStore = create<IUseReportStore>((set) => ({
     }
     return;
   },
-}))
+}));

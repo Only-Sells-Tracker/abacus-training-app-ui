@@ -9,8 +9,18 @@ export function SettingsPage() {
       items: [
         { icon: Volume2, label: 'Sound Effects', value: 'On', color: 'from-blue-500 to-cyan-600' },
         { icon: Bell, label: 'Notifications', value: 'On', color: 'from-purple-500 to-pink-600' },
-        { icon: Moon, label: 'Dark Mode', value: 'Always On', color: 'from-indigo-500 to-purple-600' },
-        { icon: Globe, label: 'Language', value: 'English', color: 'from-green-500 to-emerald-600' },
+        {
+          icon: Moon,
+          label: 'Dark Mode',
+          value: 'Always On',
+          color: 'from-indigo-500 to-purple-600',
+        },
+        {
+          icon: Globe,
+          label: 'Language',
+          value: 'English',
+          color: 'from-green-500 to-emerald-600',
+        },
       ],
     },
     {
@@ -54,11 +64,14 @@ export function SettingsPage() {
                 return (
                   <button
                     key={item.label}
-                    className={`w-full flex items-center justify-between p-4 hover:bg-white/5 transition-all ${index !== section.items.length - 1 ? 'border-b border-white/10' : ''
-                      }`}
+                    className={`w-full flex items-center justify-between p-4 hover:bg-white/5 transition-all ${
+                      index !== section.items.length - 1 ? 'border-b border-white/10' : ''
+                    }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center`}>
+                      <div
+                        className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center`}
+                      >
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <span className="text-base text-white">{item.label}</span>

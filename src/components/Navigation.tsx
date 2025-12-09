@@ -23,7 +23,7 @@ export function Navigation({ activeSection, onSectionChange }: NavigationProps) 
         <div className="flex items-center justify-center h-16">
           {/* Navigation Items - Desktop */}
           <div className="hidden md:flex items-center gap-2">
-            {navItems.map((item) => {
+            {navItems.map(item => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
               return (
@@ -52,7 +52,7 @@ export function Navigation({ activeSection, onSectionChange }: NavigationProps) 
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2 w-full justify-around">
-            {navItems.map((item) => {
+            {navItems.map(item => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
               return (
@@ -68,7 +68,9 @@ export function Navigation({ activeSection, onSectionChange }: NavigationProps) 
                       transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                  <Icon className={`relative w-5 h-5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                  <Icon
+                    className={`relative w-5 h-5 ${isActive ? 'text-white' : 'text-gray-400'}`}
+                  />
                 </button>
               );
             })}

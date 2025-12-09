@@ -3,11 +3,26 @@ import { User, Mail, Calendar, Award, Target, Zap } from 'lucide-react';
 
 export function ProfilePage() {
   const achievements = [
-    { icon: '🏆', title: 'First Win', description: 'Complete your first tournament', unlocked: true },
+    {
+      icon: '🏆',
+      title: 'First Win',
+      description: 'Complete your first tournament',
+      unlocked: true,
+    },
     { icon: '🔥', title: 'Hot Streak', description: '5 day practice streak', unlocked: true },
-    { icon: '🎯', title: 'Perfectionist', description: '100% accuracy in a session', unlocked: true },
+    {
+      icon: '🎯',
+      title: 'Perfectionist',
+      description: '100% accuracy in a session',
+      unlocked: true,
+    },
     { icon: '⚡', title: 'Speed Demon', description: 'Complete Neptune level', unlocked: false },
-    { icon: '🌟', title: 'Rising Star', description: 'Reach top 10 on leaderboard', unlocked: false },
+    {
+      icon: '🌟',
+      title: 'Rising Star',
+      description: 'Reach top 10 on leaderboard',
+      unlocked: false,
+    },
     { icon: '💎', title: 'Master', description: 'Complete all tournaments', unlocked: false },
   ];
 
@@ -99,11 +114,13 @@ export function ProfilePage() {
                 }`}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
-                    achievement.unlocked
-                      ? 'bg-gradient-to-br from-purple-500 to-pink-600'
-                      : 'bg-white/10'
-                  }`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
+                      achievement.unlocked
+                        ? 'bg-gradient-to-br from-purple-500 to-pink-600'
+                        : 'bg-white/10'
+                    }`}
+                  >
                     {achievement.icon}
                   </div>
                   <div className="flex-1">

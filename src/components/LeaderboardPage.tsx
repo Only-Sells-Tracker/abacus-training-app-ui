@@ -3,14 +3,70 @@ import { Trophy, Medal, Award, Crown } from 'lucide-react';
 
 export function LeaderboardPage() {
   const leaderboard = [
-    { rank: 1, name: 'Sarah Chen', score: 9850, accuracy: '98%', icon: Crown, color: 'text-yellow-400' },
-    { rank: 2, name: 'Alex Kumar', score: 9720, accuracy: '97%', icon: Medal, color: 'text-gray-400' },
-    { rank: 3, name: 'Maria Garcia', score: 9680, accuracy: '96%', icon: Medal, color: 'text-orange-400' },
-    { rank: 4, name: 'John Smith', score: 9450, accuracy: '95%', icon: Award, color: 'text-blue-400' },
-    { rank: 5, name: 'Emma Wilson', score: 9320, accuracy: '94%', icon: Award, color: 'text-purple-400' },
-    { rank: 6, name: 'David Lee', score: 9180, accuracy: '93%', icon: Award, color: 'text-green-400' },
-    { rank: 7, name: 'Sophie Martin', score: 9050, accuracy: '92%', icon: Award, color: 'text-pink-400' },
-    { rank: 8, name: 'James Brown', score: 8920, accuracy: '91%', icon: Award, color: 'text-cyan-400' },
+    {
+      rank: 1,
+      name: 'Sarah Chen',
+      score: 9850,
+      accuracy: '98%',
+      icon: Crown,
+      color: 'text-yellow-400',
+    },
+    {
+      rank: 2,
+      name: 'Alex Kumar',
+      score: 9720,
+      accuracy: '97%',
+      icon: Medal,
+      color: 'text-gray-400',
+    },
+    {
+      rank: 3,
+      name: 'Maria Garcia',
+      score: 9680,
+      accuracy: '96%',
+      icon: Medal,
+      color: 'text-orange-400',
+    },
+    {
+      rank: 4,
+      name: 'John Smith',
+      score: 9450,
+      accuracy: '95%',
+      icon: Award,
+      color: 'text-blue-400',
+    },
+    {
+      rank: 5,
+      name: 'Emma Wilson',
+      score: 9320,
+      accuracy: '94%',
+      icon: Award,
+      color: 'text-purple-400',
+    },
+    {
+      rank: 6,
+      name: 'David Lee',
+      score: 9180,
+      accuracy: '93%',
+      icon: Award,
+      color: 'text-green-400',
+    },
+    {
+      rank: 7,
+      name: 'Sophie Martin',
+      score: 9050,
+      accuracy: '92%',
+      icon: Award,
+      color: 'text-pink-400',
+    },
+    {
+      rank: 8,
+      name: 'James Brown',
+      score: 8920,
+      accuracy: '91%',
+      icon: Award,
+      color: 'text-cyan-400',
+    },
   ];
 
   const topThree = leaderboard.slice(0, 3);

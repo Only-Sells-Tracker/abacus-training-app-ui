@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 import axios from 'axios';
 import ApiURL from '../utils/apiurl';
 
@@ -23,7 +23,7 @@ export interface IUseGameStore {
   setSelectedTournamentGame: (tournament: ITournamentGame) => void;
 }
 
-export const useGameStore = create<IUseGameStore>((set) => ({
+export const useGameStore = create<IUseGameStore>(set => ({
   tournametGames: null,
   selectedTournamentGame: null,
   error: null,
@@ -40,5 +40,5 @@ export const useGameStore = create<IUseGameStore>((set) => ({
   },
   setSelectedTournamentGame: (tournament: ITournamentGame) => {
     set({ selectedTournamentGame: tournament });
-  }
-}))
+  },
+}));

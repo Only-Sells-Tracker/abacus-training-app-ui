@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AppRoutes } from './routes';
@@ -27,17 +27,24 @@ export default function App() {
 
   const pathToSection = (pathname: string): NavSection => {
     switch (pathname) {
-      case '/progress': return 'progress';
-      case '/leaderboard': return 'leaderboard';
-      case '/profile': return 'profile';
-      case '/settings': return 'settings';
-      default: return 'dashboard';
+      case '/progress':
+        return 'progress';
+      case '/leaderboard':
+        return 'leaderboard';
+      case '/profile':
+        return 'profile';
+      case '/settings':
+        return 'settings';
+      default:
+        return 'dashboard';
     }
   };
 
   useEffect(() => {
     if (localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY)) {
-      const authResponse = JSON.parse(localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY) as string);
+      const authResponse = JSON.parse(
+        localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY) as string
+      );
       setAuthenticatedUser({ token: authResponse.token, email: authResponse.email });
     }
   }, []);
@@ -47,19 +54,31 @@ export default function App() {
       <Route
         path="/login"
         element={
-          authenticatedUser && authenticatedUser.token ? <Navigate to="/" replace /> : <Login onLogin={setAuthenticatedUser} />
+          authenticatedUser && authenticatedUser.token ? (
+            <Navigate to="/" replace />
+          ) : (
+            <Login onLogin={setAuthenticatedUser} />
+          )
         }
       />
       <Route
         path="/*"
         element={
           authenticatedUser && authenticatedUser.token ? (
-            <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
+            <div
+              className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col"
+              style={{ paddingTop: '40px', paddingBottom: '60px' }}
+            >
               <div className="flex-1 overflow-auto">
                 <AppRoutes />
               </div>
               {location.pathname !== '/game' && (
-                <Navigation activeSection={pathToSection(location.pathname)} onSectionChange={section => navigate(section === 'dashboard' ? '/' : `/${section}`)} />
+                <Navigation
+                  activeSection={pathToSection(location.pathname)}
+                  onSectionChange={section =>
+                    navigate(section === 'dashboard' ? '/' : `/${section}`)
+                  }
+                />
               )}
             </div>
           ) : (

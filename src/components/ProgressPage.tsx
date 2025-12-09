@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { motion } from 'motion/react';
 import { TrendingUp, Calendar, Target, Zap, Award } from 'lucide-react';
 import { useReportStore } from '../store/useReportStore';
@@ -8,10 +8,34 @@ export function ProgressPage() {
   const { report, error, loading, fetchReport } = useReportStore();
 
   const stats = [
-    { label: 'Total Sessions', value: '24', icon: Calendar, color: 'from-blue-500 to-cyan-600', valueText: 'sessions' },
-    { label: 'Accuracy Rate', value: '87%', icon: Target, color: 'from-green-500 to-emerald-600', valueText: 'accuracy' },
-    { label: 'Current Streak', value: '5 days', icon: Zap, color: 'from-yellow-500 to-orange-600', valueText: 'streak' },
-    { label: 'Achievements', value: '12', icon: Award, color: 'from-purple-500 to-pink-600', valueText: 'achievements' },
+    {
+      label: 'Total Sessions',
+      value: '24',
+      icon: Calendar,
+      color: 'from-blue-500 to-cyan-600',
+      valueText: 'sessions',
+    },
+    {
+      label: 'Accuracy Rate',
+      value: '87%',
+      icon: Target,
+      color: 'from-green-500 to-emerald-600',
+      valueText: 'accuracy',
+    },
+    {
+      label: 'Current Streak',
+      value: '5 days',
+      icon: Zap,
+      color: 'from-yellow-500 to-orange-600',
+      valueText: 'streak',
+    },
+    {
+      label: 'Achievements',
+      value: '12',
+      icon: Award,
+      color: 'from-purple-500 to-pink-600',
+      valueText: 'achievements',
+    },
   ];
 
   const recentActivity = [
@@ -44,10 +68,18 @@ export function ProgressPage() {
             transition={{ delay: 0 * 0.1 }}
             className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
           >
-            <div className={`w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-4`}>
+            <div
+              className={`w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-4`}
+            >
               <Calendar className="w-6 h-6 text-white" />
             </div>
-            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : report?.sessions}</div>
+            <div className="text-3xl text-white mb-1">
+              {loading ? (
+                <div className="loader" style={{ width: 38, padding: 5 }}></div>
+              ) : (
+                report?.sessions
+              )}
+            </div>
             <div className="text-sm text-gray-400">Total Sessions</div>
           </motion.div>
 
@@ -58,10 +90,18 @@ export function ProgressPage() {
             transition={{ delay: 0 * 0.1 }}
             className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
           >
-            <div className={`w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4`}>
+            <div
+              className={`w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4`}
+            >
               <Target className="w-6 h-6 text-white" />
             </div>
-            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : `${report?.accuracy}%`}</div>
+            <div className="text-3xl text-white mb-1">
+              {loading ? (
+                <div className="loader" style={{ width: 38, padding: 5 }}></div>
+              ) : (
+                `${report?.accuracy}%`
+              )}
+            </div>
             <div className="text-sm text-gray-400">Accuracy Rate</div>
           </motion.div>
 
@@ -72,10 +112,18 @@ export function ProgressPage() {
             transition={{ delay: 0 * 0.1 }}
             className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
           >
-            <div className={`w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4`}>
+            <div
+              className={`w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4`}
+            >
               <Zap className="w-6 h-6 text-white" />
             </div>
-            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : report?.streak}</div>
+            <div className="text-3xl text-white mb-1">
+              {loading ? (
+                <div className="loader" style={{ width: 38, padding: 5 }}></div>
+              ) : (
+                report?.streak
+              )}
+            </div>
             <div className="text-sm text-gray-400">Current Streak</div>
           </motion.div>
 
@@ -86,10 +134,18 @@ export function ProgressPage() {
             transition={{ delay: 0 * 0.1 }}
             className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6"
           >
-            <div className={`w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-4`}>
+            <div
+              className={`w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-4`}
+            >
               <Award className="w-6 h-6 text-white" />
             </div>
-            <div className="text-3xl text-white mb-1">{loading ? <div className="loader" style={{ width: 38, padding: 5 }}></div> : report?.achievements}</div>
+            <div className="text-3xl text-white mb-1">
+              {loading ? (
+                <div className="loader" style={{ width: 38, padding: 5 }}></div>
+              ) : (
+                report?.achievements
+              )}
+            </div>
             <div className="text-sm text-gray-400">Achievements</div>
           </motion.div>
         </div>

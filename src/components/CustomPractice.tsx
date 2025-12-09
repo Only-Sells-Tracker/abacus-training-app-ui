@@ -21,7 +21,7 @@ export function CustomPractice({ onStart }: CustomPracticeProps) {
   const toggleOperation = (operation: 'add' | 'subtract') => {
     if (operations.includes(operation)) {
       if (operations.length > 1) {
-        setOperations(operations.filter((op) => op !== operation));
+        setOperations(operations.filter(op => op !== operation));
       }
     } else {
       setOperations([...operations, operation]);
@@ -44,10 +44,7 @@ export function CustomPractice({ onStart }: CustomPracticeProps) {
           </div>
           <h2 className="text-xl text-white">Custom Practice</h2>
         </div>
-        <motion.div
-          animate={{ rotate: isExpanded ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
           <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
         </motion.div>
       </button>
@@ -67,7 +64,7 @@ export function CustomPractice({ onStart }: CustomPracticeProps) {
             <div>
               <label className="block text-sm text-gray-400 mb-3">Number of Digits</label>
               <div className="flex gap-2">
-                {[2, 3, 4, 5, 6].map((count) => (
+                {[2, 3, 4, 5, 6].map(count => (
                   <button
                     key={count}
                     onClick={() => setDigitCount(count)}
@@ -138,7 +135,7 @@ export function CustomPractice({ onStart }: CustomPracticeProps) {
             <div>
               <label className="block text-sm text-gray-400 mb-3">Interval (seconds)</label>
               <div className="flex gap-2">
-                {[0.5, 0.75, 1, 1.5, 2].map((seconds) => (
+                {[0.5, 0.75, 1, 1.5, 2].map(seconds => (
                   <button
                     key={seconds}
                     onClick={() => setDelay(seconds * 1000)}

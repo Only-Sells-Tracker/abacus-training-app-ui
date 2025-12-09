@@ -16,13 +16,17 @@ export function TournamentCard({ tournament, onSelect }: TournamentCardProps) {
       className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-white/10 hover:bg-white/10 transition-all duration-300 text-left overflow-hidden group w-full h-full"
     >
       {/* Gradient Background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${tournament.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}></div>
-      
+      <div
+        className={`absolute inset-0 bg-gradient-to-br ${tournament.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+      ></div>
+
       {/* Content */}
       <div className="relative z-10">
         {/* Planet Icon */}
         <div className="flex items-start justify-between mb-4">
-          <div className={`w-16 h-16 bg-gradient-to-br ${tournament.color} rounded-2xl flex items-center justify-center text-3xl shadow-lg`}>
+          <div
+            className={`w-16 h-16 bg-gradient-to-br ${tournament.color} rounded-2xl flex items-center justify-center text-3xl shadow-lg`}
+          >
             {tournament.icon}
           </div>
           <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-all duration-300" />

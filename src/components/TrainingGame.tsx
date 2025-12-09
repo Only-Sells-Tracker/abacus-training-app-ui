@@ -34,7 +34,9 @@ export function TrainingGame() {
 
     for (let i = 0; i < (tournament as ITournamentGame).numberCount; i++) {
       const value = Math.floor(Math.random() * (max - min + 1)) + min;
-      const operation = (tournament as ITournamentGame).operations[Math.floor(Math.random() * (tournament as ITournamentGame).operations.length)];
+      const operation = (tournament as ITournamentGame).operations[
+        Math.floor(Math.random() * (tournament as ITournamentGame).operations.length)
+      ];
       newNumbers.push({ value, operation });
     }
 
@@ -45,7 +47,7 @@ export function TrainingGame() {
 
     // Calculate correct answer
     let total = 0;
-    newNumbers.forEach((item) => {
+    newNumbers.forEach(item => {
       if (item.operation === 'add') {
         total += item.value;
       } else {
@@ -74,9 +76,12 @@ export function TrainingGame() {
 
   useEffect(() => {
     if (gameState === 'playing' && currentIndex < numbers.length) {
-      const timer = setTimeout(() => {
-        setCurrentIndex(currentIndex + 1);
-      }, (tournament as ITournamentGame).delay);
+      const timer = setTimeout(
+        () => {
+          setCurrentIndex(currentIndex + 1);
+        },
+        (tournament as ITournamentGame).delay
+      );
 
       return () => clearTimeout(timer);
     } else if (gameState === 'playing' && currentIndex >= numbers.length) {
@@ -96,11 +101,13 @@ export function TrainingGame() {
 
   return (
     <>
-      {tournament ?
+      {tournament ? (
         <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-slate-900 to-black">
           {/* Header */}
-          < div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 sticky top-0 z-50 w-full" style={{ position: 'fixed' }
-          }>
+          <div
+            className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 sticky top-0 z-50 w-full"
+            style={{ position: 'fixed' }}
+          >
             <div className="max-w-2xl mx-auto flex items-center justify-between">
               <button
                 onClick={onBack}
@@ -110,20 +117,25 @@ export function TrainingGame() {
                 <span>Back</span>
               </button>
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 bg-gradient-to-br ${(tournament as ITournamentGame).color} rounded-xl flex items-center justify-center text-xl`}>
+                <div
+                  className={`w-10 h-10 bg-gradient-to-br ${(tournament as ITournamentGame).color} rounded-xl flex items-center justify-center text-xl`}
+                >
                   {(tournament as ITournamentGame).icon}
                 </div>
                 <div>
                   <h2 className="text-lg text-white">{(tournament as ITournamentGame).planet}</h2>
-                  <p className="text-xs text-gray-400">{(tournament as ITournamentGame).digitCount} digits • {(tournament as ITournamentGame).numberCount} numbers</p>
+                  <p className="text-xs text-gray-400">
+                    {(tournament as ITournamentGame).digitCount} digits •{' '}
+                    {(tournament as ITournamentGame).numberCount} numbers
+                  </p>
                 </div>
               </div>
               <div className="w-16"></div>
             </div>
-          </div >
+          </div>
 
           {/* Main Content */}
-          < div className="flex-1 flex items-center justify-center p-4" >
+          <div className="flex-1 flex items-center justify-center p-4">
             <div className="w-full max-w-2xl">
               {/* <AnimatePresence mode="wait"> */}
               {/* Ready State */}
@@ -135,12 +147,15 @@ export function TrainingGame() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   className="text-center"
                 >
-                  <div className={`w-32 h-32 bg-gradient-to-br ${(tournament as ITournamentGame).color} rounded-full flex items-center justify-center text-6xl mx-auto mb-8 shadow-2xl`}>
+                  <div
+                    className={`w-32 h-32 bg-gradient-to-br ${(tournament as ITournamentGame).color} rounded-full flex items-center justify-center text-6xl mx-auto mb-8 shadow-2xl`}
+                  >
                     {(tournament as ITournamentGame).icon}
                   </div>
                   <h2 className="text-3xl mb-4 text-white">Ready to Train?</h2>
                   <p className="text-gray-400 mb-8 max-w-md mx-auto">
-                    {(tournament as ITournamentGame).numberCount} numbers will appear one by one. Calculate the result in your mind!
+                    {(tournament as ITournamentGame).numberCount} numbers will appear one by one.
+                    Calculate the result in your mind!
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -220,11 +235,11 @@ export function TrainingGame() {
                     <input
                       type="number"
                       value={userAnswer}
-                      onChange={(e) => setUserAnswer(e.target.value)}
+                      onChange={e => setUserAnswer(e.target.value)}
                       placeholder="Enter result"
                       autoFocus
                       className="w-full text-4xl text-center bg-white/10 border-2 border-white/20 rounded-2xl px-6 py-4 mb-6 focus:outline-none focus:border-purple-500 transition-colors tabular-nums text-white placeholder-gray-500"
-                      onKeyDown={(e) => {
+                      onKeyDown={e => {
                         if (e.key === 'Enter' && userAnswer) {
                           handleValidate();
                         }
@@ -281,9 +296,13 @@ export function TrainingGame() {
                         <h2 className="text-3xl mb-3 text-red-400">Wrong Answer</h2>
                         <div className="mb-6">
                           <p className="text-gray-400 text-sm mb-1">Your answer</p>
-                          <div className="text-3xl text-red-400 line-through mb-4 tabular-nums">{userAnswer}</div>
+                          <div className="text-3xl text-red-400 line-through mb-4 tabular-nums">
+                            {userAnswer}
+                          </div>
                           <p className="text-gray-400 text-sm mb-1">Correct answer</p>
-                          <div className="text-5xl text-green-400 tabular-nums">{correctAnswer}</div>
+                          <div className="text-5xl text-green-400 tabular-nums">
+                            {correctAnswer}
+                          </div>
                         </div>
                       </>
                     )}
@@ -311,8 +330,11 @@ export function TrainingGame() {
               )}
               {/* </AnimatePresence> */}
             </div>
-          </div >
-        </div> : <div>Navigating...</div>}
+          </div>
+        </div>
+      ) : (
+        <div>Navigating...</div>
+      )}
     </>
   );
 }

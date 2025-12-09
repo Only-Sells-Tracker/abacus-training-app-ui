@@ -11,7 +11,14 @@ import SkeletonLoader from './ui/skeleton-loader';
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const { tournametGames, selectedTournamentGame, loading, error, fetchTournamentGames, setSelectedTournamentGame } = useGameStore();
+  const {
+    tournametGames,
+    selectedTournamentGame,
+    loading,
+    error,
+    fetchTournamentGames,
+    setSelectedTournamentGame,
+  } = useGameStore();
   const { report, error: reportError, loading: reportLoading, fetchReport } = useReportStore();
   const [tournaments, setTournaments] = useState<ITournamentGame[]>();
   const [reportData, setReportData] = useState<IReport | null>(null);
@@ -52,7 +59,7 @@ export function Dashboard() {
       numberCount: settings.numberCount,
       delay: settings.delay,
       color: 'from-purple-500 to-pink-600',
-      icon: '⚙️'
+      icon: '⚙️',
     };
     setSelectedTournamentGame(customTournament);
     navigate('/game');
@@ -61,7 +68,6 @@ export function Dashboard() {
   return (
     <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl mb-6 shadow-lg">
@@ -70,9 +76,7 @@ export function Dashboard() {
           <h1 className="text-4xl sm:text-5xl mb-3 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
             My Abacus Training
           </h1>
-          <p className="text-gray-400 text-lg">
-            Choose your planet and master mental math
-          </p>
+          <p className="text-gray-400 text-lg">Choose your planet and master mental math</p>
         </div>
 
         {/* MCQ Practice Button */}
@@ -96,7 +100,12 @@ export function Dashboard() {
                 </div>
                 <div className="text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </div>
               </div>
@@ -105,13 +114,21 @@ export function Dashboard() {
         )}
 
         {/* Stats Bar */}
-        {reportLoading ? <SkillProgressionSkeleton /> :
+        {reportLoading ? (
+          <SkillProgressionSkeleton />
+        ) : (
           <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-6 mb-8 shadow-sm border border-white/10">
             <div className="flex items-center justify-center gap-8">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <Trophy className="w-5 h-5 text-yellow-500" />
-                  <span className="text-2xl text-white">{reportLoading ? <SkeletonLoader height={30} width={30} radius={8} /> : reportData?.achievements}</span>
+                  <span className="text-2xl text-white">
+                    {reportLoading ? (
+                      <SkeletonLoader height={30} width={30} radius={8} />
+                    ) : (
+                      reportData?.achievements
+                    )}
+                  </span>
                 </div>
                 <p className="text-xs text-gray-400">Completed</p>
               </div>
@@ -119,7 +136,13 @@ export function Dashboard() {
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span className="text-2xl">🎯</span>
-                  <span className="text-2xl text-white">{reportLoading ? <SkeletonLoader height={30} width={30} radius={8} /> : reportData?.accuracy}</span>
+                  <span className="text-2xl text-white">
+                    {reportLoading ? (
+                      <SkeletonLoader height={30} width={30} radius={8} />
+                    ) : (
+                      reportData?.accuracy
+                    )}
+                  </span>
                 </div>
                 <p className="text-xs text-gray-400">Accuracy</p>
               </div>
@@ -127,27 +150,37 @@ export function Dashboard() {
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span className="text-2xl">⚡</span>
-                  <span className="text-2xl text-white">{reportLoading ? <SkeletonLoader height={30} width={30} radius={8} /> : reportData?.streak}</span>
+                  <span className="text-2xl text-white">
+                    {reportLoading ? (
+                      <SkeletonLoader height={30} width={30} radius={8} />
+                    ) : (
+                      reportData?.streak
+                    )}
+                  </span>
                 </div>
                 <p className="text-xs text-gray-400">Streak</p>
               </div>
             </div>
           </div>
-        }
+        )}
 
         {/* Tournament Carousel */}
         <div className="mb-8">
           <h2 className="text-xl text-white mb-4 px-2">Tournaments</h2>
           <div className="relative -mx-4 px-4">
             <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
-              {loading ? <TournamentCaraouselSkeleton /> : tournaments?.map((tournament) => (
-                <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
-                  <TournamentCard
-                    tournament={tournament}
-                    onSelect={() => onSelectTournament(tournament)}
-                  />
-                </div>
-              ))}
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -167,15 +200,14 @@ export function Dashboard() {
 const TournamentCaraouselSkeleton = () => {
   return (
     <div className="overflow-x-auto scrollbar-hide flex gap-4">
-      {[1, 2, 3, 4, 5, 6, 7, 8]?.map((tournament) => (
+      {[1, 2, 3, 4, 5, 6, 7, 8]?.map(tournament => (
         <div key={tournament} className="snap-start shrink-0 w-[280px] first:ml-0">
           <SkeletonLoader height={290} width={278} radius={20} />
         </div>
       ))}
     </div>
   );
-}
-
+};
 
 const SkillProgressionSkeleton = () => {
   return (
@@ -183,4 +215,4 @@ const SkillProgressionSkeleton = () => {
       <SkeletonLoader height={101} width={'100%'} radius={20} />
     </div>
   );
-}
+};

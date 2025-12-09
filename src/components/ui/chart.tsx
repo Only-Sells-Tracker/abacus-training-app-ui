@@ -9,8 +9,8 @@ const ChartDashboard = () => {
   const data = [
     {
       name: 'Page A', // Matches XAxis dataKey="name"
-      uv: 4000,       // Matches Bar dataKey="uv"
-      pv: 2400,       // Matches Bar dataKey="pv"
+      uv: 4000, // Matches Bar dataKey="uv"
+      pv: 2400, // Matches Bar dataKey="pv"
       amt: 2400,
     },
     {
@@ -53,7 +53,7 @@ const ChartDashboard = () => {
 
   return (
     <div className="p-4">
-      <p style={{color: "white"}}>Test Test Test Test</p>
+      <p style={{ color: 'white' }}>Test Test Test Test</p>
       {/* A Radix Select component to control the chart type */}
       <Select value={chartType} onValueChange={setChartType}>
         {/* ... Radix Select components ... */}
