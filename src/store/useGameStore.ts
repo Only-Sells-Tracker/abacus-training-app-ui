@@ -31,7 +31,9 @@ export const useGameStore = create<IUseGameStore>(set => ({
   fetchTournamentGames: async () => {
     set({ loading: true, error: null });
     try {
-      const reult = await axios.get(ApiURL.game.fetchTournamentGame);
+      const reult = await axios.get(ApiURL.game.fetchTournamentGame, {
+        headers: { 'ngrok-skip-browser-warning': 'true' },
+      });
       set({ tournametGames: reult.data, loading: false });
     } catch (error) {
       set({ error: 'Failed to fetch report', loading: false });

@@ -23,7 +23,9 @@ export const useReportStore = create<IUseReportStore>(set => ({
   fetchReport: async () => {
     set({ loading: true, error: null });
     try {
-      const result = await axios.get(ApiURL.report.fetchProgressReport);
+      const result = await axios.get(ApiURL.report.fetchProgressReport, {
+        headers: { 'ngrok-skip-browser-warning': 'true' },
+      });
       set({ report: result.data, loading: false });
     } catch (error) {
       set({ error: 'Failed to fetch report', loading: false });

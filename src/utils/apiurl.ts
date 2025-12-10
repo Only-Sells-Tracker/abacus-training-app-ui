@@ -1,10 +1,12 @@
+// const baseURL = 'http://localhost:3001/mockapi';
+const baseURL = 'https://rosalie-overbooming-coevally.ngrok-free.dev/mockapi';
 const ApiURL = {
   game: {
-    fetchPracticeGame: 'http://localhost:3001/mockapi/practiceGames',
-    fetchTournamentGame: 'http://localhost:3001/mockapi/tournamentGames',
+    fetchPracticeGame: `${baseURL}/practiceGames`,
+    fetchTournamentGame: `${baseURL}/tournamentGames`,
   },
   report: {
-    fetchProgressReport: 'http://localhost:3001/mockapi/progressReports',
+    fetchProgressReport: `${baseURL}/progressReports`,
   },
 };
 
