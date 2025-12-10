@@ -79,40 +79,6 @@ export function Dashboard() {
           <p className="text-gray-400 text-lg">Choose your planet and master mental math</p>
         </div>
 
-        {/* MCQ Practice Button */}
-        {onMCQPractice && (
-          <div className="mb-8">
-            <button
-              onClick={onMCQPractice}
-              className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 rounded-3xl p-6 shadow-lg transition-all border border-blue-400/20 group"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <FileText className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-white text-xl mb-1">MCQ Practice</h3>
-                    <p className="text-blue-100 text-sm">
-                      5 questions · No time limit · Step-by-step navigation
-                    </p>
-                  </div>
-                </div>
-                <div className="text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </button>
-          </div>
-        )}
-
         {/* Stats Bar */}
         {reportLoading ? (
           <SkillProgressionSkeleton />
@@ -161,6 +127,40 @@ export function Dashboard() {
                 <p className="text-xs text-gray-400">Streak</p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* MCQ Practice Button */}
+        {onMCQPractice && (
+          <div className="mb-8">
+            <button
+              onClick={onMCQPractice}
+              className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 rounded-3xl p-6 shadow-lg transition-all border border-blue-400/20 group"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <FileText className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-white text-xl mb-1">MCQ Practice</h3>
+                    <p className="text-blue-100 text-sm">
+                      5 questions · No time limit · Step-by-step navigation
+                    </p>
+                  </div>
+                </div>
+                <div className="text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </button>
           </div>
         )}
 

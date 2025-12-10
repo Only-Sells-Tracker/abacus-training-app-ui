@@ -1,31 +1,33 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, List, X, Check } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
+import { ChevronLeft, ChevronRight, List, X, Check, View } from 'lucide-react';
+import { ViewAllQuestionsDialog } from './ViewAllQuestionsDialog';
 
 interface Question {
   id: number;
-  question: string;
+  question: any;
   answer: string;
 }
 
-interface MCQPracticeProps {
-  onBack: () => void;
-}
-
-// Generate random math questions
-const generateQuestions = (count: number = 5): Question[] => {
+const generateQuestions = (count: number): Question[] => {
   const questions: Question[] = [];
 
   for (let i = 0; i < count; i++) {
     const num1 = Math.floor(Math.random() * 900) + 100; // 3-digit numbers
     const num2 = Math.floor(Math.random() * 900) + 100;
+    const num3 = Math.floor(Math.random() * 900) + 100;
+    const num4 = Math.floor(Math.random() * 900) + 100;
     const operation = Math.random() > 0.5 ? '+' : '-';
 
-    const question = `${num1} ${operation} ${num2}`;
-    const answer = operation === '+' ? (num1 + num2).toString() : (num1 - num2).toString();
+    // const question = `${num1} ${operation} ${num2}`;
+    const question = QuestionTemplate([num1, num2, num3, num4], operation);
+
+    const answer =
+      operation === '+'
+        ? (num1 + num2 + num3 + num4).toString()
+        : (num1 - num2 - num3 - num4).toString();
 
     questions.push({
-      id: i + 1,
+      id: i,
       question,
       answer,
     });
@@ -35,7 +37,7 @@ const generateQuestions = (count: number = 5): Question[] => {
 };
 
 export function MCQPractice() {
-  const [questions] = useState<Question[]>(generateQuestions(5));
+  const [questions] = useState<Question[]>(generateQuestions(20));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showNavigationDialog, setShowNavigationDialog] = useState(false);
@@ -47,12 +49,14 @@ export function MCQPractice() {
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
+      slideLeft();
     }
   };
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      slideRight();
     }
   };
 
@@ -66,6 +70,16 @@ export function MCQPractice() {
   const handleQuestionNavigate = (index: number) => {
     setCurrentQuestionIndex(index);
     setShowNavigationDialog(false);
+    const windMaxIndex =
+      index + WINDOWSIZE - 1 >= questions.length ? questions.length - 1 : index + WINDOWSIZE - 1;
+    const windMinIndex = windMaxIndex - WINDOWSIZE + 1;
+    setSlidingWindowParams({
+      ...slidingWindowParams,
+      currentWindowIndex: index,
+      currentWindowMin: windMinIndex,
+      currentWindowMax: windMaxIndex,
+      list: questions.slice(windMinIndex, windMaxIndex + 1),
+    });
   };
 
   const handleSubmit = () => {
@@ -91,9 +105,65 @@ export function MCQPractice() {
 
   const allQuestionsAnswered = questions.every(q => isAnswered(q.id));
 
+  const WINDOWSIZE = 5;
+  const [slidingWindowParams, setSlidingWindowParams] = useState<any>({
+    windowSize: WINDOWSIZE,
+    list: questions.slice(0, WINDOWSIZE),
+    current: 0,
+    currentWindowIndex: 0,
+    currentWindowMin: 0,
+    currentWindowMax: WINDOWSIZE - 1,
+  });
+
+  const slideLeft = () => {
+    if (slidingWindowParams.currentWindowIndex - 1 >= slidingWindowParams.currentWindowMin) {
+      setSlidingWindowParams({
+        ...slidingWindowParams,
+        currentWindowIndex: slidingWindowParams.currentWindowIndex - 1,
+      });
+    } else if (
+      slidingWindowParams.currentWindowIndex - 1 < slidingWindowParams.currentWindowMin &&
+      slidingWindowParams.currentWindowIndex - 1 >= 0
+    ) {
+      setSlidingWindowParams({
+        ...slidingWindowParams,
+        currentWindowIndex: slidingWindowParams.currentWindowIndex - 1,
+        currentWindowMin: slidingWindowParams.currentWindowMin - 1,
+        currentWindowMax: slidingWindowParams.currentWindowMax - 1,
+        list: questions.slice(
+          slidingWindowParams.currentWindowMin - 1,
+          slidingWindowParams.currentWindowMax - 1 + 1
+        ),
+      });
+    }
+  };
+
+  const slideRight = () => {
+    if (slidingWindowParams.currentWindowIndex + 1 <= slidingWindowParams.currentWindowMax) {
+      setSlidingWindowParams({
+        ...slidingWindowParams,
+        currentWindowIndex: slidingWindowParams.currentWindowIndex + 1,
+      });
+    } else if (
+      slidingWindowParams.currentWindowIndex + 1 > slidingWindowParams.currentWindowMax &&
+      slidingWindowParams.currentWindowIndex + 1 < questions.length
+    ) {
+      setSlidingWindowParams({
+        ...slidingWindowParams,
+        currentWindowIndex: slidingWindowParams.currentWindowIndex + 1,
+        currentWindowMin: slidingWindowParams.currentWindowMin + 1,
+        currentWindowMax: slidingWindowParams.currentWindowMax + 1,
+        list: questions.slice(
+          slidingWindowParams.currentWindowMin + 1,
+          slidingWindowParams.currentWindowMax + 1 + 1
+        ),
+      });
+    }
+  };
+
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex items-center justify-center p-4">
+      <div className="min-h-screen flex justify-center p-4">
         <div className="w-full max-w-md">
           <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10">
             <div className="text-center mb-8">
@@ -160,189 +230,150 @@ export function MCQPractice() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-gray-900/80 backdrop-blur-xl border-b border-white/10">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between max-w-3xl mx-auto">
-            <button
-              onClick={() => window.history.back()}
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-            >
-              <X className="w-5 h-5" />
-              <span>Exit</span>
-            </button>
-
-            <div className="flex items-center gap-2">
-              <span className="text-gray-400">Question</span>
-              <span className="text-white">
+    <>
+      {1 ? (
+        <div className="flex flex-col bg-gradient-to-br from-gray-900 via-slate-900 to-black">
+          {/* Header */}
+          <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 top-0 z-50 w-full fixed">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => window.history.back()}
+                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+                <span>Exit</span>
+              </button>
+              <div className="h-10 bg-gradient-to-br rounded-xl flex items-center justify-center text-xl text-white">
                 {currentQuestionIndex + 1} / {questions.length}
-              </span>
-            </div>
-
-            <button
-              onClick={() => setShowNavigationDialog(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-white transition-all"
-            >
-              <List className="w-5 h-5" />
-              <span>View All</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      {!showNavigationDialog ? (
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
-          <div className="w-full max-w-2xl">
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-12 shadow-2xl border border-white/10">
-              {/* Question */}
-              <div className="mb-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl">
-                    <span className="text-white text-xl">{currentQuestionIndex + 1}</span>
-                  </div>
-                  <h3 className="text-gray-400">
-                    Question {currentQuestionIndex + 1} of {questions.length}
-                  </h3>
-                </div>
-
-                <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                  <p className="text-4xl sm:text-5xl text-white text-center tracking-wider">
-                    {currentQuestion.question}
-                  </p>
-                </div>
               </div>
-
-              {/* Answer Input */}
-              <div className="mb-8">
-                <label className="block text-gray-400 mb-3">Your Answer</label>
-                <input
-                  type="number"
-                  value={answers[currentQuestion.id] || ''}
-                  onChange={e => handleAnswerChange(e.target.value)}
-                  placeholder="Enter your answer"
-                  className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white text-2xl text-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all placeholder:text-gray-500"
-                  autoFocus
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-white transition-all">
+                <List className="w-5 h-5" />
+                <ViewAllQuestionsDialog
+                  questions={questions}
+                  handleQuestionNavigate={handleQuestionNavigate}
+                  currentQuestionIndex={currentQuestionIndex}
+                  isAnswered={isAnswered}
+                  answers={answers}
+                  handleSubmit={handleSubmit}
+                  allQuestionsAnswered={allQuestionsAnswered}
                 />
               </div>
+            </div>
+          </div>
 
-              {/* Navigation Buttons */}
-              <div className="flex items-center justify-between gap-4">
-                <button
-                  onClick={handlePrevious}
-                  disabled={currentQuestionIndex === 0}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl border transition-all ${
-                    currentQuestionIndex === 0
-                      ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
-                      : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                  }`}
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                  <span>Previous</span>
-                </button>
+          {/* Main Content */}
+          <div className="py-12 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              {/* Main Content */}
+              <div className="flex justify-center min-h-[calc(100vh-80px)] p-4">
+                <div className="w-full max-w-2xl">
+                  <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-12 shadow-2xl border border-white/10">
+                    {/* Question */}
+                    <div className="mb-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl">
+                          <span className="text-white text-xl">{currentQuestionIndex + 1}</span>
+                        </div>
+                        <h3 className="text-gray-400">
+                          Question {currentQuestionIndex + 1} of {questions.length}
+                        </h3>
+                      </div>
 
-                <div className="flex gap-2">
-                  {questions.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        index === currentQuestionIndex
-                          ? 'bg-purple-500 w-8'
-                          : isAnswered(questions[index].id)
-                            ? 'bg-green-500'
-                            : 'bg-gray-600'
-                      }`}
-                    />
-                  ))}
+                      <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
+                        <div className="text-2xl sm:text-2xl text-white text-center tracking-wider">
+                          {currentQuestion.question}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Answer Input */}
+                    <div className="mb-8">
+                      <label className="block text-gray-400 mb-3">Your Answer</label>
+                      <input
+                        type="number"
+                        value={answers[currentQuestion.id] || ''}
+                        onChange={e => handleAnswerChange(e.target.value)}
+                        placeholder="Enter your answer"
+                        className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white text-2xl text-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all placeholder:text-gray-500"
+                        autoFocus
+                      />
+                    </div>
+
+                    {/* Navigation Buttons */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={handlePrevious}
+                        disabled={currentQuestionIndex === 0}
+                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${
+                          currentQuestionIndex === 0
+                            ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
+                            : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                        <span>Previous</span>
+                      </button>
+
+                      <div className="flex gap-2">
+                        {slidingWindowParams.list.map((ele: any, index: number) => (
+                          <div
+                            key={ele.id}
+                            className={`w-2 h-2 rounded-full transition-all ${
+                              ele.id === slidingWindowParams.currentWindowIndex
+                                ? 'bg-purple-500 w-4'
+                                : isAnswered(ele.id)
+                                  ? 'bg-green-500'
+                                  : 'bg-gray-600'
+                            }`}
+                          />
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={handleNext}
+                        disabled={currentQuestionIndex === questions.length - 1}
+                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${
+                          currentQuestionIndex === questions.length - 1
+                            ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
+                            : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <span>Next</span>
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
-
-                <button
-                  onClick={handleNext}
-                  disabled={currentQuestionIndex === questions.length - 1}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl border transition-all ${
-                    currentQuestionIndex === questions.length - 1
-                      ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
-                      : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                  }`}
-                >
-                  <span>Next</span>
-                  <ChevronRight className="w-5 h-5" />
-                </button>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div>
-          <div className="bg-gray-900 border-white/10 text-white max-w-md">
-            <div>
-              <div className="text-2xl text-white">All Questions</div>
-              <div className="text-gray-400">
-                Navigate between questions and track your progress
-              </div>
-            </div>
-
-            <div className="grid grid-cols-5 gap-3 my-6">
-              {questions.map((q, index) => (
-                <button
-                  key={q.id}
-                  onClick={() => handleQuestionNavigate(index)}
-                  className={`aspect-square rounded-full flex items-center justify-center text-lg transition-all border-2 ${
-                    index === currentQuestionIndex
-                      ? 'bg-purple-500 border-purple-400 text-white scale-110'
-                      : isAnswered(q.id)
-                        ? 'bg-green-500 border-green-400 text-white hover:scale-105'
-                        : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600 hover:scale-105'
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex items-center justify-between text-sm mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                <span className="text-gray-300">
-                  Answered (
-                  {Object.keys(answers).filter(key => answers[parseInt(key)] !== '').length})
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full bg-gray-700"></div>
-                <span className="text-gray-300">
-                  Unanswered (
-                  {questions.length -
-                    Object.keys(answers).filter(key => answers[parseInt(key)] !== '').length}
-                  )
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              disabled={!allQuestionsAnswered}
-              className={`w-full py-4 rounded-2xl transition-all ${
-                allQuestionsAnswered
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 shadow-lg'
-                  : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              {allQuestionsAnswered
-                ? 'Submit All Answers'
-                : `Answer all questions to submit (${Object.keys(answers).filter(key => answers[parseInt(key)] !== '').length}/${questions.length})`}
-            </button>
-
-            <button
-              onClick={() => setShowNavigationDialog(false)}
-              className="w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all"
-            >
-              Continue Practice
-            </button>
-          </div>
-        </div>
+        <div>Navigating...</div>
       )}
-    </div>
+    </>
   );
 }
+
+const QuestionTemplate = (numbers: number[], operation: string) => (
+  <div>
+    {numbers.map((num: number, index: number) => (
+      <div key={index} className="h-[40px]">
+        <div className="text-2xl sm:text-2xl text-white">
+          {index > 0 ? (
+            <div className="flex items-center justify-between">
+              <div className="w-[10yuiop[0px]">{operation}</div>
+              <div className="w-[100px]">{num}</div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="w-[100px]"></div>
+              <div className="w-[100px]">{num}</div>
+            </div>
+          )}
+        </div>
+        <br />
+      </div>
+    ))}
+  </div>
+);
