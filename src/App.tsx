@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AppRoutes } from './routes';
 import { Navigation, NavSection } from './components/Navigation';
@@ -24,6 +24,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const { authenticatedUser, setAuthenticatedUser } = useUserStore();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const pathToSection = (pathname: string): NavSection => {
     switch (pathname) {
@@ -49,6 +50,12 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [location.pathname]);
+
   return (
     <Routes>
       <Route
@@ -69,7 +76,7 @@ export default function App() {
               className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col"
               style={{ paddingTop: '40px', paddingBottom: '60px' }}
             >
-              <div className="flex-1 overflow-auto">
+              <div ref={scrollContainerRef} className="flex-1 overflow-auto">
                 <AppRoutes />
               </div>
               {location.pathname !== '/game' && (

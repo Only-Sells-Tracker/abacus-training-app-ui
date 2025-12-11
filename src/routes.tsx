@@ -5,18 +5,10 @@ import { LeaderboardPage } from './components/LeaderboardPage';
 import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
 import { TrainingGame } from './components/TrainingGame';
-import { useEffect } from 'react';
 import { MCQPractice } from './components/MCQPractice';
 
 export function AppRoutes() {
   const location = useLocation();
-  useEffect(() => {
-    console.log('Location changed');
-    window.scroll({
-      top: 0,
-      left: 0,
-    });
-  }, [location]);
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
