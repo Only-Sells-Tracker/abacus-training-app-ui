@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, List, X, Check, View } from 'lucide-react';
 import { ViewAllQuestionsDialog } from './ViewAllQuestionsDialog';
 
@@ -37,7 +37,7 @@ const generateQuestions = (count: number): Question[] => {
 };
 
 export function MCQPractice() {
-  const [questions] = useState<Question[]>(generateQuestions(20));
+  const [questions] = useState<Question[]>(generateQuestions(5));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showNavigationDialog, setShowNavigationDialog] = useState(false);
@@ -163,66 +163,78 @@ export function MCQPractice() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mb-6 shadow-lg">
-                <Check className="w-10 h-10 text-white" />
+      <div>
+        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 top-0 z-50 w-full fixed pt-18 md:pt-4">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => window.history.back()}
+              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+              <span>Exit</span>
+            </button>
+          </div>
+        </div>
+        <div className="min-h-screen flex justify-center p-4 mb-8 pt-36 md:pt-24">
+          <div className="w-full max-w-md">
+            <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mb-6 shadow-lg">
+                  <Check className="w-10 h-10 text-white" />
+                </div>
+                <h2 className="text-3xl text-white mb-2">Practice Complete!</h2>
+                <p className="text-gray-400">Here are your results</p>
               </div>
-              <h2 className="text-3xl text-white mb-2">Practice Complete!</h2>
-              <p className="text-gray-400">Here are your results</p>
-            </div>
 
-            <div className="space-y-4 mb-8">
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                <div className="text-center">
-                  <p className="text-gray-400 mb-2">Your Score</p>
-                  <p className="text-5xl text-white mb-1">
-                    {score}/{questions.length}
-                  </p>
-                  <p className="text-xl text-gray-300">
-                    {Math.round((score / questions.length) * 100)}%
-                  </p>
+              <div className="space-y-4 mb-8">
+                <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                  <div className="text-center">
+                    <p className="text-gray-400 mb-2">Your Score</p>
+                    <p className="text-5xl text-white mb-1">
+                      {score}/{questions.length}
+                    </p>
+                    <p className="text-xl text-gray-300">
+                      {Math.round((score / questions.length) * 100)}%
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  {questions.map((q, index) => (
+                    <div
+                      key={q.id}
+                      className={`bg-white/5 rounded-xl p-4 border ${isCorrect(q.id)
+                        ? 'border-green-500/30 bg-green-500/5'
+                        : 'border-red-500/30 bg-red-500/5'
+                        }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-gray-400 text-sm">Question {index + 1}</p>
+                          <p className="text-white">{q.question}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-gray-400 text-sm">Your answer</p>
+                          <p className={`${isCorrect(q.id) ? 'text-green-400' : 'text-red-400'}`}>
+                            {answers[q.id] || 'Not answered'}
+                          </p>
+                          {!isCorrect(q.id) && (
+                            <p className="text-gray-400 text-sm mt-1">Correct: {q.answer}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="space-y-2">
-                {questions.map((q, index) => (
-                  <div
-                    key={q.id}
-                    className={`bg-white/5 rounded-xl p-4 border ${
-                      isCorrect(q.id)
-                        ? 'border-green-500/30 bg-green-500/5'
-                        : 'border-red-500/30 bg-red-500/5'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-gray-400 text-sm">Question {index + 1}</p>
-                        <p className="text-white">{q.question}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-gray-400 text-sm">Your answer</p>
-                        <p className={`${isCorrect(q.id) ? 'text-green-400' : 'text-red-400'}`}>
-                          {answers[q.id] || 'Not answered'}
-                        </p>
-                        {!isCorrect(q.id) && (
-                          <p className="text-gray-400 text-sm mt-1">Correct: {q.answer}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <button
+                onClick={() => window.location.reload()}
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all shadow-lg"
+              >
+                Back to Dashboard
+              </button>
             </div>
-
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all shadow-lg"
-            >
-              Back to Dashboard
-            </button>
           </div>
         </div>
       </div>
@@ -232,9 +244,9 @@ export function MCQPractice() {
   return (
     <>
       {1 ? (
-        <div className="flex flex-col bg-gradient-to-br from-gray-900 via-slate-900 to-black">
+        <div className="flex flex-col">
           {/* Header */}
-          <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 top-0 z-50 w-full fixed">
+          <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 top-0 z-50 w-full fixed pt-14 md:pt-4">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => window.history.back()}
@@ -262,10 +274,10 @@ export function MCQPractice() {
           </div>
 
           {/* Main Content */}
-          <div className="py-12 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+          <div className="mt-32 pb-24">
+            <div className="max-w-7xl">
               {/* Main Content */}
-              <div className="flex justify-center min-h-[calc(100vh-80px)] p-4">
+              <div className="flex justify-center  p-4">
                 <div className="w-full max-w-2xl">
                   <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-12 shadow-2xl border border-white/10">
                     {/* Question */}
@@ -304,11 +316,10 @@ export function MCQPractice() {
                       <button
                         onClick={handlePrevious}
                         disabled={currentQuestionIndex === 0}
-                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${
-                          currentQuestionIndex === 0
-                            ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
-                            : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                        }`}
+                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${currentQuestionIndex === 0
+                          ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
+                          : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                          }`}
                       >
                         <ChevronLeft className="w-5 h-5" />
                         <span>Previous</span>
@@ -318,13 +329,12 @@ export function MCQPractice() {
                         {slidingWindowParams.list.map((ele: any, index: number) => (
                           <div
                             key={ele.id}
-                            className={`w-2 h-2 rounded-full transition-all ${
-                              ele.id === slidingWindowParams.currentWindowIndex
-                                ? 'bg-purple-500 w-4'
-                                : isAnswered(ele.id)
-                                  ? 'bg-green-500'
-                                  : 'bg-gray-600'
-                            }`}
+                            className={`w-2 h-2 rounded-full transition-all ${ele.id === slidingWindowParams.currentWindowIndex
+                              ? 'bg-purple-500 w-4'
+                              : isAnswered(ele.id)
+                                ? 'bg-green-500'
+                                : 'bg-gray-600'
+                              }`}
                           />
                         ))}
                       </div>
@@ -332,11 +342,10 @@ export function MCQPractice() {
                       <button
                         onClick={handleNext}
                         disabled={currentQuestionIndex === questions.length - 1}
-                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${
-                          currentQuestionIndex === questions.length - 1
-                            ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
-                            : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                        }`}
+                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${currentQuestionIndex === questions.length - 1
+                          ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
+                          : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                          }`}
                       >
                         <span>Next</span>
                         <ChevronRight className="w-5 h-5" />
@@ -347,6 +356,19 @@ export function MCQPractice() {
               </div>
             </div>
           </div>
+
+          {/* Footer */}
+          <div className="fixed bottom-0 left-0 right-0 bg-gray-900/50 backdrop-blur-xl border-t border-white/10 p-4">
+            <div className="max-w-2xl mx-auto">
+              <button
+                onClick={handleSubmit}
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all shadow-lg text-lg font-semibold"
+              >
+                Submit Answers
+              </button>
+            </div>
+          </div>
+
         </div>
       ) : (
         <div>Navigating...</div>

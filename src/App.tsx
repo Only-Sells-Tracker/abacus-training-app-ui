@@ -7,6 +7,7 @@ import Login from './components/Login';
 import { useUserStore } from './store/useUserStore';
 import { ITournamentGame } from './store/useGameStore';
 import CONSTANTS from './utils/constants';
+import { useConfigStore } from './store/useConfigStore';
 
 export interface Tournament {
   id: string;
@@ -42,6 +43,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    UXConfigLogics();
     if (localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY)) {
       const authResponse = JSON.parse(
         localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY) as string
@@ -51,10 +53,26 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    UXConfigLogics(location.pathname);
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
   }, [location.pathname]);
+
+  const UXConfigLogics = (pathname?: string) => {
+    if (pathname === '/mcq') {
+      hideFooterNavigation();
+      hideTopEmptySpace();
+      hideBottomEmptySpace();
+    }
+    else {
+      showTopEmptySpace();
+      showBottomEmptySpace();
+      showFooterNavigation();
+    }
+  }
+
+  const { FooterNavigation, TopEmptySpace, BottomEmptySpace, showTopEmptySpace, showBottomEmptySpace, showFooterNavigation, hideFooterNavigation, hideTopEmptySpace, hideBottomEmptySpace } = useConfigStore();
 
   return (
     <Routes>
@@ -74,12 +92,13 @@ export default function App() {
           authenticatedUser && authenticatedUser.token ? (
             <div
               className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col"
-              style={{ paddingTop: '40px', paddingBottom: '60px' }}
             >
               <div ref={scrollContainerRef} className="flex-1 overflow-auto">
+                {TopEmptySpace && <div style={{ height: '42px' }}></div>}
                 <AppRoutes />
+                {BottomEmptySpace && <div style={{ height: '68px' }}></div>}
               </div>
-              {location.pathname !== '/game' && (
+              {FooterNavigation && location.pathname !== '/game' && (
                 <Navigation
                   activeSection={pathToSection(location.pathname)}
                   onSectionChange={section =>
