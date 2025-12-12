@@ -6,9 +6,9 @@ import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
 import { TrainingGame } from './components/TrainingGame';
 import { MCQPractice } from './components/MCQPractice';
+import { OnboardingFlow } from './components/OnboardingFlow';
 
 export function AppRoutes() {
-  const location = useLocation();
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />

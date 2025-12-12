@@ -59,4 +59,5 @@ export default defineConfig({
     open: true,
     allowedHosts: ['rosalie-overbooming-coevally.ngrok-free.dev']
   },
+  appType: 'spa',
 });

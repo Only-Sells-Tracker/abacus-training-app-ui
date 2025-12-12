@@ -86,7 +86,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => voi
         className="w-full max-w-md relative z-10"
       >
         {/* Logo and Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 mt-16">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}

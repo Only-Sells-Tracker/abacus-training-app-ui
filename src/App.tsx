@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AppRoutes } from './routes';
 import { Navigation, NavSection } from './components/Navigation';
@@ -9,6 +9,7 @@ import { ITournamentGame } from './store/useGameStore';
 import CONSTANTS from './utils/constants';
 import { useConfigStore } from './store/useConfigStore';
 import { LoginScreen } from './components/LoginScreen';
+import { OnboardingFlow } from './components/OnboardingFlow';
 
 export interface Tournament {
   id: string;
@@ -27,6 +28,7 @@ export default function App() {
   const location = useLocation();
   const { authenticatedUser, setAuthenticatedUser } = useUserStore();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const pathToSection = (pathname: string): NavSection => {
     switch (pathname) {
@@ -45,12 +47,16 @@ export default function App() {
 
   useEffect(() => {
     UXConfigLogics();
-    if (localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY)) {
-      const authResponse = JSON.parse(
-        localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY) as string
-      );
-      setAuthenticatedUser({ token: authResponse.token, email: authResponse.email });
+    try {
+      const storedUser = localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY);
+      if (storedUser) {
+        const authResponse = JSON.parse(storedUser);
+        setAuthenticatedUser({ token: authResponse.token, email: authResponse.email });
+      }
+    } finally {
+      setIsAuthLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -61,10 +67,10 @@ export default function App() {
   }, [location.pathname]);
 
   const UXConfigLogics = (pathname?: string) => {
-    if (pathname === '/mcq') {
-      hideFooterNavigation();
+    if (pathname === '/mcq' || pathname === '/game') {
       hideTopEmptySpace();
       hideBottomEmptySpace();
+      hideFooterNavigation();
     } else {
       showTopEmptySpace();
       showBottomEmptySpace();
@@ -84,8 +90,23 @@ export default function App() {
     hideBottomEmptySpace,
   } = useConfigStore();
 
+  if (isAuthLoading) {
+    return null; // Or a loading spinner component
+  }
+
   return (
     <Routes>
+      <Route
+        path="/onboarding"
+        element={
+          authenticatedUser && authenticatedUser.token ? (
+            <Navigate to="/" replace />
+          ) : (
+            // <Login onLogin={setAuthenticatedUser} />
+            <OnboardingFlow />
+          )
+        }
+      />
       <Route
         path="/login"
         element={
@@ -107,7 +128,7 @@ export default function App() {
                 <AppRoutes />
                 {BottomEmptySpace && <div style={{ height: '68px' }}></div>}
               </div>
-              {FooterNavigation && location.pathname !== '/game' && (
+              {FooterNavigation && (
                 <Navigation
                   activeSection={pathToSection(location.pathname)}
                   onSectionChange={section =>
@@ -117,7 +138,7 @@ export default function App() {
               )}
             </div>
           ) : (
-            <Navigate to="/login" replace />
+            <Navigate to="/onboarding" replace />
           )
         }
       />
