@@ -221,9 +221,7 @@ export function MCQPractice() {
                   <div className="text-center">
                     <p className="text-gray-400 mb-2">Time Taken</p>
                     <div className="text-4xl text-white">{formatTime(time)}</div>
-                    <p className="text-lg text-gray-300">
-                      {time} seconds
-                    </p>
+                    <p className="text-lg text-gray-300">{time} seconds</p>
                   </div>
                 </div>
 
@@ -232,10 +230,11 @@ export function MCQPractice() {
                   {questions.map((q, index) => (
                     <div
                       key={q.id}
-                      className={`bg-white/5 rounded-xl p-4 border ${isCorrect(q.id)
-                        ? 'border-green-500/30 bg-green-500/5'
-                        : 'border-red-500/30 bg-red-500/5'
-                        }`}
+                      className={`bg-white/5 rounded-xl p-4 border ${
+                        isCorrect(q.id)
+                          ? 'border-green-500/30 bg-green-500/5'
+                          : 'border-red-500/30 bg-red-500/5'
+                      }`}
                     >
                       <div className="flex items-center justify-between">
                         <div>
@@ -349,10 +348,11 @@ export function MCQPractice() {
                       <button
                         onClick={handlePrevious}
                         disabled={currentQuestionIndex === 0}
-                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${currentQuestionIndex === 0
-                          ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
-                          : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                          }`}
+                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${
+                          currentQuestionIndex === 0
+                            ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
+                            : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                        }`}
                       >
                         <ChevronLeft className="w-5 h-5" />
                         <span>Previous</span>
@@ -362,12 +362,13 @@ export function MCQPractice() {
                         {slidingWindowParams.list.map((ele: any, index: number) => (
                           <div
                             key={ele.id}
-                            className={`w-2 h-2 rounded-full transition-all ${ele.id === slidingWindowParams.currentWindowIndex
-                              ? 'bg-purple-500 w-4'
-                              : isAnswered(ele.id)
-                                ? 'bg-green-500'
-                                : 'bg-gray-600'
-                              }`}
+                            className={`w-2 h-2 rounded-full transition-all ${
+                              ele.id === slidingWindowParams.currentWindowIndex
+                                ? 'bg-purple-500 w-4'
+                                : isAnswered(ele.id)
+                                  ? 'bg-green-500'
+                                  : 'bg-gray-600'
+                            }`}
                           />
                         ))}
                       </div>
@@ -375,10 +376,11 @@ export function MCQPractice() {
                       <button
                         onClick={handleNext}
                         disabled={currentQuestionIndex === questions.length - 1}
-                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${currentQuestionIndex === questions.length - 1
-                          ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
-                          : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                          }`}
+                        className={`w-[110px] flex justify-center items-center p-1 rounded-xl border transition-all ${
+                          currentQuestionIndex === questions.length - 1
+                            ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed'
+                            : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                        }`}
                       >
                         <span>Next</span>
                         <ChevronRight className="w-5 h-5" />
@@ -401,7 +403,6 @@ export function MCQPractice() {
               </button>
             </div>
           </div>
-
         </div>
       ) : (
         <div>Navigating...</div>

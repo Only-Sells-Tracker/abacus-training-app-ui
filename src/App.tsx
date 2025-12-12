@@ -65,15 +65,24 @@ export default function App() {
       hideFooterNavigation();
       hideTopEmptySpace();
       hideBottomEmptySpace();
-    }
-    else {
+    } else {
       showTopEmptySpace();
       showBottomEmptySpace();
       showFooterNavigation();
     }
-  }
+  };
 
-  const { FooterNavigation, TopEmptySpace, BottomEmptySpace, showTopEmptySpace, showBottomEmptySpace, showFooterNavigation, hideFooterNavigation, hideTopEmptySpace, hideBottomEmptySpace } = useConfigStore();
+  const {
+    FooterNavigation,
+    TopEmptySpace,
+    BottomEmptySpace,
+    showTopEmptySpace,
+    showBottomEmptySpace,
+    showFooterNavigation,
+    hideFooterNavigation,
+    hideTopEmptySpace,
+    hideBottomEmptySpace,
+  } = useConfigStore();
 
   return (
     <Routes>
@@ -92,9 +101,7 @@ export default function App() {
         path="/*"
         element={
           authenticatedUser && authenticatedUser.token ? (
-            <div
-              className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col"
-            >
+            <div className="h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex flex-col">
               <div ref={scrollContainerRef} className="flex-1 overflow-auto">
                 {TopEmptySpace && <div style={{ height: '42px' }}></div>}
                 <AppRoutes />
