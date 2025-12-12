@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, List, X, Check, View } from 'lucide-react';
+import { ChevronLeft, ChevronRight, List, X, Check, View, Timer } from 'lucide-react';
 import { ViewAllQuestionsDialog } from './ViewAllQuestionsDialog';
 
 interface Question {
@@ -43,6 +43,25 @@ export function MCQPractice() {
   const [showNavigationDialog, setShowNavigationDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    if (submitted) {
+      return;
+    }
+    const timer = setInterval(() => {
+      setTime(prevTime => prevTime + 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [submitted]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -164,7 +183,7 @@ export function MCQPractice() {
   if (submitted) {
     return (
       <div>
-        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 top-0 z-50 w-full fixed pt-18 md:pt-4">
+        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 py-4 top-0 z-50 w-full fixed pt-16 pb-6 md:pt-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => window.history.back()}
@@ -186,20 +205,30 @@ export function MCQPractice() {
                 <p className="text-gray-400">Here are your results</p>
               </div>
 
-              <div className="space-y-4 mb-8">
-                <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="space-y-6 mb-8">
+                <div className="bg-white/5 rounded-2xl p-6 border border-white/10 flex justify-around">
                   <div className="text-center">
-                    <p className="text-gray-400 mb-2">Your Score</p>
-                    <p className="text-5xl text-white mb-1">
-                      {score}/{questions.length}
-                    </p>
-                    <p className="text-xl text-gray-300">
+                    <p className="text-gray-400 mb-2">Score</p>
+                    <div className="text-4xl text-white">
+                      {score}
+                      <span className="text-2xl text-gray-400">/{questions.length}</span>
+                    </div>
+                    <p className="text-lg text-gray-300">
                       {Math.round((score / questions.length) * 100)}%
+                    </p>
+                  </div>
+                  <div className="w-px bg-white/10"></div>
+                  <div className="text-center">
+                    <p className="text-gray-400 mb-2">Time Taken</p>
+                    <div className="text-4xl text-white">{formatTime(time)}</div>
+                    <p className="text-lg text-gray-300">
+                      {time} seconds
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
+                  <h3 className="text-white text-lg px-2">Review Answers</h3>
                   {questions.map((q, index) => (
                     <div
                       key={q.id}
@@ -255,6 +284,10 @@ export function MCQPractice() {
                 <X className="w-5 h-5" />
                 <span>Exit</span>
               </button>
+              <div className="flex items-center gap-2 text-white text-lg">
+                <Timer className="w-5 h-5 text-gray-400" />
+                <span>{formatTime(time)}</span>
+              </div>
               <div className="h-10 bg-gradient-to-br rounded-xl flex items-center justify-center text-xl text-white">
                 {currentQuestionIndex + 1} / {questions.length}
               </div>

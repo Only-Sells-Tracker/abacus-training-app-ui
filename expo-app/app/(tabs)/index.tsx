@@ -108,7 +108,7 @@ export default function HomeScreen() {
     <View style={{ flex: 1 }}>
       <WebView
         originWhitelist={["*"]}
-        source={{ uri: "http://localhost:3000" }}
+        source={{ uri: "https://rosalie-overbooming-coevally.ngrok-free.dev" }}
         allowFileAccess
       />
     </View>

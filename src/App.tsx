@@ -8,6 +8,7 @@ import { useUserStore } from './store/useUserStore';
 import { ITournamentGame } from './store/useGameStore';
 import CONSTANTS from './utils/constants';
 import { useConfigStore } from './store/useConfigStore';
+import { LoginScreen } from './components/LoginScreen';
 
 export interface Tournament {
   id: string;
@@ -82,7 +83,8 @@ export default function App() {
           authenticatedUser && authenticatedUser.token ? (
             <Navigate to="/" replace />
           ) : (
-            <Login onLogin={setAuthenticatedUser} />
+            // <Login onLogin={setAuthenticatedUser} />
+            <LoginScreen onLogin={setAuthenticatedUser} />
           )
         }
       />
