@@ -1,5 +1,4 @@
 'use client';
-// import { Tournament } from '../App';
 import { TournamentCard } from './TournamentCard';
 import { CustomPractice } from './CustomPractice';
 import { Trophy, Sparkles, FileText } from 'lucide-react';
@@ -11,14 +10,8 @@ import SkeletonLoader from './ui/skeleton-loader';
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const {
-    tournametGames,
-    selectedTournamentGame,
-    loading,
-    error,
-    fetchTournamentGames,
-    setSelectedTournamentGame,
-  } = useGameStore();
+  const { tournametGames, loading, fetchTournamentGames, setSelectedTournamentGame } =
+    useGameStore();
   const { report, error: reportError, loading: reportLoading, fetchReport } = useReportStore();
   const [tournaments, setTournaments] = useState<ITournamentGame[]>();
   const [reportData, setReportData] = useState<IReport | null>(null);

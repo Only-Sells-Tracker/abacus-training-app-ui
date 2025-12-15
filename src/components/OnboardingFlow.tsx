@@ -12,12 +12,15 @@ import {
   Brain,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '../store/useUserStore';
 
 export function OnboardingFlow() {
   const [step, setStep] = useState(1);
   const [answer, setAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const navigate = useNavigate();
+  const { setOnboardingFlag, authenticatedUser, setAuthenticatedUser } = useUserStore.getState();
+  // const { authenticatedUser, setAuthenticatedUser } = useUserStore.getState();
 
   const correctAnswer = 25; // 10 + 15
 
@@ -29,8 +32,7 @@ export function OnboardingFlow() {
   };
 
   const handleSocialLogin = (provider: 'google' | 'facebook' | 'email') => {
-    // In a real app, handle social login here
-    // onComplete();
+    setOnboardingFlag();
     navigate('/login');
   };
 

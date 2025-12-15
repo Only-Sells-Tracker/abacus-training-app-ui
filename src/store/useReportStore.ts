@@ -25,10 +25,9 @@ export const useReportStore = create<IUseReportStore>(set => ({
     set({ loading: true, error: null });
     try {
       const result = await api.get(ApiURL.report.fetchProgressReport);
-      set({ report: result.data, loading: false });
+      return set({ report: result.data, loading: false });
     } catch (error) {
-      set({ error: 'Failed to fetch report', loading: false });
+      return set({ error: 'Failed to fetch report', loading: false });
     }
-    return;
   },
 }));

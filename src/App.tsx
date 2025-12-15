@@ -24,7 +24,7 @@ export interface Tournament {
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { authenticatedUser, setAuthenticatedUser } = useUserStore();
+  const { getOnboardingFlag, authenticatedUser, setAuthenticatedUser } = useUserStore();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
@@ -105,8 +105,10 @@ export default function App() {
         element={
           authenticatedUser && authenticatedUser.token ? (
             <Navigate to="/" replace />
-          ) : (
+          ) : getOnboardingFlag() ? (
             <OnboardingFlow />
+          ) : (
+            <Navigate to="/login" replace />
           )
         }
       />
@@ -116,7 +118,7 @@ export default function App() {
           authenticatedUser && authenticatedUser.token ? (
             <Navigate to="/" replace />
           ) : (
-            <LoginScreen onLogin={setAuthenticatedUser} />
+            <LoginScreen />
           )
         }
       />
@@ -140,7 +142,7 @@ export default function App() {
               )}
             </div>
           ) : (
-            <Navigate to="/login" replace />
+            <Navigate to="/onboarding" replace />
           )
         }
       />

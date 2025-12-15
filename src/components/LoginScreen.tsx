@@ -1,16 +1,15 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { Sparkles, Mail, Lock, Eye, EyeOff, ArrowRight, Apple } from 'lucide-react';
 import { motion } from 'motion/react';
 import api from '../utils/api';
+import { IAuthenticatedUser, useUserStore } from '../store/useUserStore';
 
-export interface LoginResponse {
-  token: string;
-  email: string;
-}
+// export interface LoginResponse {
+//   token: string;
+//   email: string;
+// }
 
-export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => void }) {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+export function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
@@ -18,37 +17,11 @@ export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => voi
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { authenticatedUser, login, loginError, loginLoading } = useUserStore();
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //     e.preventDefault();
-  //     // In a real app, you'd validate credentials here
-  //     onLogin();
-  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      // const res = await fetch('https://abacus-demo.free.beeceptor.com/auth/signin', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      // const res = await api.post('signin', { email, password });
-      const res: any = await api.post('login', { email, password });
-      if (!res) throw new Error('Invalid credentials');
-      // const data = await res.json();
-      const data = { token: res.data.access_token, email }; // Mocked response
-      if (data.token) {
-        onLogin(data);
-      } else {
-        setError('Invalid credentials');
-      }
-    } catch (err) {
-      setError('Invalid credentials');
-    } finally {
-      setLoading(false);
-    }
+    login(email, password);
   };
 
   return (
@@ -184,14 +157,21 @@ export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => voi
             </div>
 
             {/* Submit Button */}
-            <p className="text-red-500">{error}</p>
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl py-4 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all group flex items-center justify-center gap-2"
-            >
-              <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+            <p className="text-red-500">{loginError}</p>
+            {!loginLoading ? (
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl py-4 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all group flex items-center justify-center gap-2"
+              >
+                <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            ) : (
+              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl py-4 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all group flex items-center justify-center gap-2">
+                <span>{isSignUp ? 'Create AccountX' : 'Sign InX'}</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            )}
           </form>
 
           {/* Divider */}
