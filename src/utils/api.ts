@@ -1,12 +1,16 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import CONSTANTS from './constants';
+import { useUserStore } from '../store/useUserStore';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001/mockapi',
   headers: {
     'Content-Type': 'application/json',
+    'x-access-token': JSON.parse(localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY) || '{}').token || '',
   },
 });
+
+const { authenticatedUser, removeAuthenticatedUser } = useUserStore.getState();
 
 // Request interceptor to add the auth token to headers
 api.interceptors.request.use(
@@ -25,6 +29,18 @@ api.interceptors.request.use(
     return config;
   },
   error => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    if (error.response && error.response.status === 401) {
+      removeAuthenticatedUser();
+    }
     return Promise.reject(error);
   }
 );

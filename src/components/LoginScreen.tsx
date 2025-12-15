@@ -34,12 +34,11 @@ export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => voi
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify({ email, password }),
       // });
-      const res = await api.post('signin', {
-        body: JSON.stringify({ email, password }),
-      });
+      // const res = await api.post('signin', { email, password });
+      const res: any = await api.post('login', { email, password });
       if (!res) throw new Error('Invalid credentials');
       // const data = await res.json();
-      const data = { token: 'demo-token', email }; // Mocked response
+      const data = { token: res.data.access_token, email }; // Mocked response
       if (data.token) {
         onLogin(data);
       } else {
