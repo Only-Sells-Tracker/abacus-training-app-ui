@@ -104,7 +104,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => voi
             transition={{ delay: 0.3 }}
             className="text-4xl sm:text-5xl mb-3 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
           >
-            Abacus Training
+            Mental Math Master
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -184,7 +184,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: LoginResponse) => voi
             </div>
 
             {/* Submit Button */}
-            <p className='text-red-500'>{error}</p>
+            <p className="text-red-500">{error}</p>
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl py-4 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all group flex items-center justify-center gap-2"

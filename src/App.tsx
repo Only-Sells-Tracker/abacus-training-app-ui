@@ -3,9 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AppRoutes } from './routes';
 import { Navigation, NavSection } from './components/Navigation';
-import Login from './components/Login';
 import { useUserStore } from './store/useUserStore';
-import { ITournamentGame } from './store/useGameStore';
 import CONSTANTS from './utils/constants';
 import { useConfigStore } from './store/useConfigStore';
 import { LoginScreen } from './components/LoginScreen';
@@ -54,7 +52,6 @@ export default function App() {
         const authResponse = JSON.parse(storedUser);
         setAuthenticatedUser({ token: authResponse.token, email: authResponse.email });
         console.log(authenticatedUser);
-        
       }
     } finally {
       setIsAuthLoading(false);
@@ -71,7 +68,7 @@ export default function App() {
 
   const onboardingUser = () => {
     navigate('/onboarding');
-  }
+  };
 
   const UXConfigLogics = (pathname?: string) => {
     if (pathname === '/mcq' || pathname === '/game' || pathname === '/paywall') {
@@ -98,7 +95,7 @@ export default function App() {
   } = useConfigStore();
 
   if (isAuthLoading) {
-    return null; // Or a loading spinner component
+    return null;
   }
 
   return (

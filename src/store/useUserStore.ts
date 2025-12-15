@@ -37,10 +37,7 @@ export const useUserStore = create<IUseUserStore>(set => ({
     });
   },
   setOnboardingUser: (onboardingUser: string) => {
-    localStorage.setItem(
-      CONSTANTS.ONBOARDING_USER_STORAGE_KEY,
-      JSON.stringify(onboardingUser)
-    );
+    localStorage.setItem(CONSTANTS.ONBOARDING_USER_STORAGE_KEY, JSON.stringify(onboardingUser));
     return set({ onboardingUser });
   },
 }));

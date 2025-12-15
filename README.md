@@ -1,5 +1,5 @@
 # abacus-training-app-ui
-UI for abacus training app
+UI for mental math master app
 
 ## Running the code
 

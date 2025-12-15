@@ -1,5 +1,5 @@
 {
-      "name": "Abacus Training App Design",
+      "name": "Mental Math Master",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
@@ -43,6 +43,7 @@
             "react": "^18.3.1",
             "react-day-picker": "^8.10.1",
             "react-dom": "^18.3.1",
+            "react-error-boundary": "^6.0.0",
             "react-hook-form": "^7.55.0",
             "react-resizable-panels": "^2.1.7",
             "react-router-dom": "^7.9.6",

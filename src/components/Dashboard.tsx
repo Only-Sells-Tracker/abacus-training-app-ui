@@ -74,7 +74,7 @@ export function Dashboard() {
             <Sparkles className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl sm:text-5xl mb-3 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-            My Abacus Training
+            Mental Math Master
           </h1>
           <p className="text-gray-400 text-lg">Choose your planet and master mental math</p>
         </div>
