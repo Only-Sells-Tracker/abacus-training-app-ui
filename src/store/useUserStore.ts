@@ -8,8 +8,10 @@ export interface IAuthenticatedUser {
 
 export interface IUseUserStore {
   authenticatedUser: IAuthenticatedUser;
+  onboardingUser: string | null;
   setAuthenticatedUser: (authenticatedUser: IAuthenticatedUser) => void;
   removeAuthenticatedUser: () => void;
+  setOnboardingUser: (onboardingUser: string) => void;
 }
 
 export const useUserStore = create<IUseUserStore>(set => ({
@@ -17,6 +19,7 @@ export const useUserStore = create<IUseUserStore>(set => ({
     token: null,
     email: null,
   },
+  onboardingUser: null,
   setAuthenticatedUser: (authenticatedUser: IAuthenticatedUser) => {
     localStorage.setItem(
       CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY,
@@ -25,7 +28,6 @@ export const useUserStore = create<IUseUserStore>(set => ({
     return set({ authenticatedUser: authenticatedUser });
   },
   removeAuthenticatedUser: () => {
-    console.log('authenticatedUser being removed from store and localStorage');
     localStorage.removeItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY);
     return set({
       authenticatedUser: {
@@ -33,5 +35,12 @@ export const useUserStore = create<IUseUserStore>(set => ({
         email: null,
       },
     });
+  },
+  setOnboardingUser: (onboardingUser: string) => {
+    localStorage.setItem(
+      CONSTANTS.ONBOARDING_USER_STORAGE_KEY,
+      JSON.stringify(onboardingUser)
+    );
+    return set({ onboardingUser });
   },
 }));

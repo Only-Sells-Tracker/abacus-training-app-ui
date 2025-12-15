@@ -46,12 +46,15 @@ export default function App() {
   };
 
   useEffect(() => {
-    UXConfigLogics();
     try {
+      UXConfigLogics();
+      // onboardingUser();
       const storedUser = localStorage.getItem(CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY);
       if (storedUser) {
         const authResponse = JSON.parse(storedUser);
         setAuthenticatedUser({ token: authResponse.token, email: authResponse.email });
+        console.log(authenticatedUser);
+        
       }
     } finally {
       setIsAuthLoading(false);
@@ -66,8 +69,12 @@ export default function App() {
     }
   }, [location.pathname]);
 
+  const onboardingUser = () => {
+    navigate('/onboarding');
+  }
+
   const UXConfigLogics = (pathname?: string) => {
-    if (pathname === '/mcq' || pathname === '/game') {
+    if (pathname === '/mcq' || pathname === '/game' || pathname === '/paywall') {
       hideTopEmptySpace();
       hideBottomEmptySpace();
       hideFooterNavigation();
@@ -102,7 +109,6 @@ export default function App() {
           authenticatedUser && authenticatedUser.token ? (
             <Navigate to="/" replace />
           ) : (
-            // <Login onLogin={setAuthenticatedUser} />
             <OnboardingFlow />
           )
         }
@@ -113,7 +119,6 @@ export default function App() {
           authenticatedUser && authenticatedUser.token ? (
             <Navigate to="/" replace />
           ) : (
-            // <Login onLogin={setAuthenticatedUser} />
             <LoginScreen onLogin={setAuthenticatedUser} />
           )
         }
@@ -138,7 +143,7 @@ export default function App() {
               )}
             </div>
           ) : (
-            <Navigate to="/onboarding" replace />
+            <Navigate to="/login" replace />
           )
         }
       />

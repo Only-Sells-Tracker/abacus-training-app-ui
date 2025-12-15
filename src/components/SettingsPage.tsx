@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Settings, Volume2, Bell, Moon, Globe, Info, LogOut } from 'lucide-react';
 import { useUserStore } from '../store/useUserStore';
+import { useNavigate } from 'react-router-dom';
 
 export function SettingsPage() {
   const settingsSections = [
@@ -32,7 +33,9 @@ export function SettingsPage() {
   ];
 
   const { removeAuthenticatedUser } = useUserStore();
+  const navigate = useNavigate();
   const handleSignOut = () => {
+    // navigate('/paywall');
     removeAuthenticatedUser();
   };
 

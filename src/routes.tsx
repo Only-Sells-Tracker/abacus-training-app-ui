@@ -6,7 +6,7 @@ import { ProfilePage } from './components/ProfilePage';
 import { SettingsPage } from './components/SettingsPage';
 import { TrainingGame } from './components/TrainingGame';
 import { MCQPractice } from './components/MCQPractice';
-import { OnboardingFlow } from './components/OnboardingFlow';
+import { Paywall } from './components/Paywall';
 
 export function AppRoutes() {
   return (
@@ -18,6 +18,7 @@ export function AppRoutes() {
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="/game" element={<TrainingGame />} />
       <Route path="/mcq" element={<MCQPractice />} />
+      <Route path="/paywall" element={<Paywall />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

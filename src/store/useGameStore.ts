@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import ApiURL from '../utils/apiurl';
+import api from '../utils/api';
 
 export interface ITournamentGame {
   id: string;
@@ -31,9 +32,7 @@ export const useGameStore = create<IUseGameStore>(set => ({
   fetchTournamentGames: async () => {
     set({ loading: true, error: null });
     try {
-      const reult = await axios.get(ApiURL.game.fetchTournamentGame, {
-        headers: { 'ngrok-skip-browser-warning': 'true' },
-      });
+      const reult = await api.get(ApiURL.game.fetchTournamentGame);
       set({ tournametGames: reult.data, loading: false });
     } catch (error) {
       set({ error: 'Failed to fetch report', loading: false });
