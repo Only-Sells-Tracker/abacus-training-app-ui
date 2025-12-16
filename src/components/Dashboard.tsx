@@ -125,8 +125,6 @@ export function Dashboard() {
           </div>
         )}
 
-        <DropdownMenuDemo />
-
         <h2 className="text-xl text-white mb-4 px-2">Flash Calculation</h2>
         <div className="flex items-start">
           <button onClick={() => setFlashGameLevel('beginner')} className="flex items-center justify-around gap-1 bg-yellow-500/20 text-yellow-400 px-3 py-1.5 rounded-full text-xs border border-yellow-500/30 mb-4 mr-2 w-25">
