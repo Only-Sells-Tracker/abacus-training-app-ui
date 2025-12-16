@@ -23,14 +23,15 @@ export function TournamentCard({ tournament, onSelect }: TournamentCardProps) {
       {/* Content */}
       <div className="relative z-10">
         {/* Planet Icon */}
-        <div className="flex items-start justify-between mb-4">
+        {/* <div className="flex items-start justify-between mb-4">
           <div
             className={`w-16 h-16 bg-gradient-to-br ${tournament.color} rounded-2xl flex items-center justify-center text-3xl shadow-lg`}
           >
             {tournament.icon}
           </div>
           <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-all duration-300" />
-        </div>
+        </div> */}
+        <img src='https://mxfmj8wrrjv5and6.public.blob.vercel-storage.com/31dbed13-9148-4635-9b09-f6b27a02c84f.png' className={`w-16 h-16 flex items-center justify-center text-3xl shadow-lg mb-4`} />
 
         {/* Tournament Name */}
         <h3 className="text-2xl mb-2 text-white">{tournament.planet}</h3>

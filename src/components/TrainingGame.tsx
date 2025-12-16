@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Plus, Minus, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ITournamentGame, IUseGameStore, useGameStore } from '../store/useGameStore';
+import api from '../utils/api';
 
 interface TrainingGameProps {
   tournament: Tournament;
@@ -27,23 +28,26 @@ export function TrainingGame() {
 
   const { selectedTournamentGame: tournament }: IUseGameStore = useGameStore();
 
-  const generateNumbers = () => {
-    const min = Math.pow(10, (tournament as ITournamentGame).digitCount - 1);
-    const max = Math.pow(10, (tournament as ITournamentGame).digitCount) - 1;
+  const generateNumbers = async () => {
+    // const min = Math.pow(10, (tournament as ITournamentGame).digitCount - 1);
+    // const max = Math.pow(10, (tournament as ITournamentGame).digitCount) - 1;
     const newNumbers: NumberItem[] = [];
 
-    for (let i = 0; i < (tournament as ITournamentGame).numberCount; i++) {
-      const value = Math.floor(Math.random() * (max - min + 1)) + min;
-      const operation = (tournament as ITournamentGame).operations[
-        Math.floor(Math.random() * (tournament as ITournamentGame).operations.length)
-      ];
-      newNumbers.push({ value, operation });
-    }
+    // for (let i = 0; i < (tournament as ITournamentGame).numberCount; i++) {
+    //   const value = Math.floor(Math.random() * (max - min + 1)) + min;
+    //   const operation = (tournament as ITournamentGame).operations[
+    //     Math.floor(Math.random() * (tournament as ITournamentGame).operations.length)
+    //   ];
+    //   newNumbers.push({ value, operation });
+    // }
 
     // First number is always addition
-    newNumbers[0].operation = 'add';
+    // newNumbers[0].operation = 'add';
+    const nums = await api.get('flashGame/fg_1');
+    nums.data[0].operation = 'add';
+    setNumbers(nums.data);
 
-    setNumbers(newNumbers);
+    // setNumbers(newNumbers);
 
     // Calculate correct answer
     let total = 0;
@@ -57,8 +61,8 @@ export function TrainingGame() {
     setCorrectAnswer(total);
   };
 
-  const startGame = () => {
-    generateNumbers();
+  const startGame = async () => {
+    await generateNumbers();
     setCurrentIndex(0);
     setUserAnswer('');
     setGameState('playing');
@@ -95,7 +99,6 @@ export function TrainingGame() {
   const progress = (currentIndex / numbers.length) * 100;
 
   const onBack = () => {
-    // setSelectedTournament(null);
     navigate('/');
   };
 

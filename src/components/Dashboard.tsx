@@ -15,8 +15,10 @@ export function Dashboard() {
   const { report, error: reportError, loading: reportLoading, fetchReport } = useReportStore();
   const [tournaments, setTournaments] = useState<ITournamentGame[]>();
   const [reportData, setReportData] = useState<IReport | null>(null);
-
   const [showMCQPractice, setShowMCQPractice] = useState(false);
+
+  const [flashGameLevel, setFlashGameLevel] = useState('beginner');
+
   const onMCQPractice = () => {
     setShowMCQPractice(true);
     navigate('/mcq');
@@ -123,6 +125,157 @@ export function Dashboard() {
           </div>
         )}
 
+        <DropdownMenuDemo />
+
+        <h2 className="text-xl text-white mb-4 px-2">Flash Calculation</h2>
+        <div className="flex items-start">
+          <button onClick={() => setFlashGameLevel('beginner')} className="flex items-center justify-around gap-1 bg-yellow-500/20 text-yellow-400 px-3 py-1.5 rounded-full text-xs border border-yellow-500/30 mb-4 mr-2 w-25">
+            <span>Beginner</span>
+          </button>
+          <button onClick={() => setFlashGameLevel('intermediate')} className="flex items-center justify-around gap-1 bg-green-500/20 text-green-400 px-3 py-1.5 rounded-full text-xs border border-green-500/30 mb-4 mr-2 w-25">
+            <span>Intermediate</span>
+          </button>
+          <button onClick={() => setFlashGameLevel('advanced')} className="flex items-center justify-around gap-1 bg-red-500/20 text-red-400 px-3 py-1.5 rounded-full text-xs border border-red-500/30 mb-4 w-25 text-center">
+            <span>Advanced</span>
+          </button>
+        </div>
+
+        {/* Tournament Carousel */}
+        {flashGameLevel === 'beginner' && <div className="mb-8">
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>}
+
+        {/* Tournament Carousel */}
+        {flashGameLevel === 'intermediate' && <div className="mb-8">
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>}
+
+        {/* Tournament Carousel */}
+        {flashGameLevel === 'advanced' && <div className="mb-8">
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>}
+
+        <h2 className="text-xl text-white mb-4 px-2">Mental Math Calculation</h2>
+        <div className="flex items-start">
+          <button onClick={() => setFlashGameLevel('beginner')} className="flex items-center justify-around gap-1 bg-yellow-500/20 text-yellow-400 px-3 py-1.5 rounded-full text-xs border border-yellow-500/30 mb-4 mr-2 w-25">
+            <span>Beginner</span>
+          </button>
+          <button onClick={() => setFlashGameLevel('intermediate')} className="flex items-center justify-around gap-1 bg-green-500/20 text-green-400 px-3 py-1.5 rounded-full text-xs border border-green-500/30 mb-4 mr-2 w-25">
+            <span>Intermediate</span>
+          </button>
+          <button onClick={() => setFlashGameLevel('advanced')} className="flex items-center justify-around gap-1 bg-red-500/20 text-red-400 px-3 py-1.5 rounded-full text-xs border border-red-500/30 mb-4 w-25 text-center">
+            <span>Advanced</span>
+          </button>
+        </div>
+
+        {/* Tournament Carousel */}
+        {flashGameLevel === 'beginner' && <div className="mb-8">
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>}
+
+        {/* Tournament Carousel */}
+        {flashGameLevel === 'intermediate' && <div className="mb-8">
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>}
+
+        {/* Tournament Carousel */}
+        {flashGameLevel === 'advanced' && <div className="mb-8">
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
+              {loading ? (
+                <TournamentCaraouselSkeleton />
+              ) : (
+                tournaments?.map(tournament => (
+                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
+                    <TournamentCard
+                      tournament={tournament}
+                      onSelect={() => onSelectTournament(tournament)}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>}
+
+        {/* Custom Practice Section */}
+        <CustomPractice onStart={onCustomPractice} />
+
         {/* MCQ Practice Button */}
         {onMCQPractice && (
           <div className="mb-8">
@@ -156,30 +309,6 @@ export function Dashboard() {
             </button>
           </div>
         )}
-
-        {/* Tournament Carousel */}
-        <div className="mb-8">
-          <h2 className="text-xl text-white mb-4 px-2">Tournaments</h2>
-          <div className="relative -mx-4 px-4">
-            <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-4 pb-4">
-              {loading ? (
-                <TournamentCaraouselSkeleton />
-              ) : (
-                tournaments?.map(tournament => (
-                  <div key={tournament.id} className="snap-start shrink-0 w-[280px] first:ml-0">
-                    <TournamentCard
-                      tournament={tournament}
-                      onSelect={() => onSelectTournament(tournament)}
-                    />
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Custom Practice Section */}
-        <CustomPractice onStart={onCustomPractice} />
 
         {/* Footer */}
         <div className="text-center mt-12 text-gray-500 text-sm">

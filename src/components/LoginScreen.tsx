@@ -167,10 +167,9 @@ export function LoginScreen() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             ) : (
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl py-4 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all group flex items-center justify-center gap-2">
-                <span>{isSignUp ? 'Create AccountX' : 'Sign InX'}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <div className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl py-4 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all group flex items-center justify-center gap-2">
+                <span>{isSignUp ? 'Creating Account...' : 'Signing In...'}</span>
+              </div>
             )}
           </form>
 

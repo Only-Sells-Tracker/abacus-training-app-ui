@@ -72,7 +72,7 @@ export const useUserStore = create<IUseUserStore>(set => ({
         CONSTANTS.AUTHENTICATED_USER_STORAGE_KEY,
         JSON.stringify(authenticatedUser)
       );
-      set({ authenticatedUser: authenticatedUser });
+      set({ authenticatedUser: authenticatedUser, loginLoading: false });
     } catch (error) {
       set({ loginError: 'Invalid Credential', loginLoading: false });
     }
